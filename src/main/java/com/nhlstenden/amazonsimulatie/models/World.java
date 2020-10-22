@@ -33,7 +33,11 @@ public class World implements Model {
      */
     public World() {
         this.worldObjects = new ArrayList<>();
-        this.worldObjects.add(new Robot());
+        this.worldObjects.add(new Robot(25.0, 0.0, 10.0));
+        this.worldObjects.add(new Robot(25.0, 0.0, 20.0));
+        this.worldObjects.add(new Box(5.5, 0.0, 7.0));
+        this.worldObjects.add(new Box(5.5, 0.0, 14.0));
+        this.worldObjects.add(new Box(5.5, 0.0, 21.0));
     }
 
     /*
@@ -45,13 +49,26 @@ public class World implements Model {
      * is het onderdeel niet veranderd en hoeft er dus ook geen signaal naar de controller verstuurd
      * te worden.
      */
+    
     @Override
     public void update() {
-        for (Object3D object : this.worldObjects) {
-            if(object instanceof Updatable) {
-                if (((Updatable)object).update()) {
-                    pcs.firePropertyChange(Model.UPDATE_COMMAND, null, new ProxyObject3D(object));
+        for (Object3D robot : this.worldObjects) {
+        	for (Object3D box : this.worldObjects) {
+        		if(robot instanceof Robot) {
+        			if (box instanceof Box) {
+        				if (((Robot) robot).getTask() == null) {
+        					if (((Box) box).getTaken() == false) {
+        						((Robot) robot).giveTask(box);
+        						((Box) box).giveTaken(true);
+        					}
+        				}
+        			}
                 }
+            }
+        }
+        for (Object3D object : this.worldObjects) {
+            if (((Updatable)object).update()) {
+                pcs.firePropertyChange(Model.UPDATE_COMMAND, null, new ProxyObject3D(object));
             }
         }
     }
