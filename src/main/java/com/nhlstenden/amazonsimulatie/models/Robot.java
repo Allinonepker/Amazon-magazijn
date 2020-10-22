@@ -2,6 +2,7 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
 
+
 /*
  * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
@@ -9,31 +10,23 @@ import java.util.UUID;
  */
 class Robot implements Object3D, Updatable {
     private UUID uuid;
-    
-    // taak van de robot
-    private Object3D task = null;
-    
-    private double x = 0;
-    private double y = 0.15;
-    private double z = 0;
 
-    private double startX = 0;
-    private double startY = 0;
-    private double startZ = 0;
-    
+    private Object3D task = null;
     private boolean goingBack = false;
     
+    private double x = 0;
+    private double y = 0;
+    private double z = 0;
+
     private double rotationX = 0;
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Robot(Double x, Double y, Double z) {
+    public Robot(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
-        
-        this.startX = x;
-        this.startZ = z;
+        this.y = y;
     }
 
     /*
@@ -51,35 +44,11 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-    	if (this.goingBack == true) {
-    		this.x += (this.startX - this.x) / 20;
-    		this.z += (this.startZ - this.z) / 20;
-        	if (this.startX - this.x < 2 || this.startZ - this.y < 2) {
-        		this.x += (this.startX - this.x);
-        		this.z += (this.startZ - this.z);
-        	}
-    	}
     	
-    	if (task != null) {
-    		Double boxX = task.getX();
-    		Double boxY = task.getY();
-    		Double boxZ = task.getZ();
-    		
-    		this.x += (boxX - this.x) / 20;
-    		this.z += (boxZ - this.z) / 20;
-    		
-        	if (Math.abs(boxX - this.x) < 2 || Math.abs(boxZ - this.y) < 2) {
-        		this.x += (boxX - this.x);
-        		this.z += (boxZ - this.z);
-        	}
-    		
-    		if (boxX == this.x && boxZ == this.z) {
-    			task = null;
-    			this.goingBack = true;
-    		}
-            return true;
-    	}
-    	return false;
+            this.rotationY = rotationY + Math.PI/16;
+
+        
+        return true;
     }
 
     @Override
@@ -97,7 +66,7 @@ class Robot implements Object3D, Updatable {
          */
         return Robot.class.getSimpleName().toLowerCase();
     }
-
+    
     @Override
     public double getX() {
         return this.x;
@@ -123,14 +92,6 @@ class Robot implements Object3D, Updatable {
         return this.rotationY;
     }
 
-    public void giveTask(Object3D box) {
-    	this.task = box;
-    }
-    
-    public Object3D getTask() {
-    	return this.task;
-    }
-    
     @Override
     public double getRotationZ() {
         return this.rotationZ;

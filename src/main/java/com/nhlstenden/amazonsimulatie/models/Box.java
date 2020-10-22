@@ -6,12 +6,8 @@ class Box implements Object3D, Updatable {
 	private UUID uuid;
 
     private double x = 0;
-    private double y = 1.5;
+    private double y = 0;
     private double z = 0;
-    
-    private double startX = 0;
-    private double startY = 0;
-    private double startZ = 0;
     
     private double rotationX = 0;
     private double rotationY = 0;
@@ -23,9 +19,7 @@ class Box implements Object3D, Updatable {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
-        
-        this.startX = x;
-        this.startZ = z;
+      
     }
     
     public boolean getTaken() {
@@ -39,17 +33,14 @@ class Box implements Object3D, Updatable {
     @Override
     public boolean update() {
     	
-    	if (this.x != this.startX && this.z != this.startZ) {
-        	this.x += (this.startX - this.x) / 20;
-        	this.z += (this.startZ - this.z) / 20;
-        	if (Math.abs(this.startX - this.x) < 2 || Math.abs(this.startZ - this.y) < 2) {
-        		this.x += (this.startX - this.x);
-        		this.z += (this.startZ - this.z);
-        	}
+//    	if (this.x != this.startX && this.z != this.startZ) {
+//        	this.x += (this.startX - this.x) / 20;
+//        	this.z += (this.startZ - this.z) / 20;
+//        	if (Math.abs(this.startX - this.x) < 2 || Math.abs(this.startZ - this.y) < 2) {
+//        		this.x += (this.startX - this.x);
+//        		this.z += (this.startZ - this.z);
+//        	}
         	return true;
-    	}
-    	
-        return false;
     }
 
     @Override

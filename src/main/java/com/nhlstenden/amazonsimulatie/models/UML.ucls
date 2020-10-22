@@ -112,83 +112,65 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="com.nhlstenden.amazonsimulatie.models.Box" project="AmazonSimulatie" 
-    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Box.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1081" y="744"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <realization id="13">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="8"/>  
-  </realization>  
-  <association id="14">    
+  <association id="12">    
     <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="15" name="controller"/>      
-      <multiplicity id="16" minimum="0" maximum="1"/>    
+      <attribute id="13" name="controller"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="17">    
+  <realization id="15">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="8"/>  
   </realization>  
-  <realization id="18">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <association id="19">    
+  <association id="16">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="20" name="model">        
+      <attribute id="17" name="model">        
         <position height="18" width="36" x="726" y="359"/>      
       </attribute>      
-      <multiplicity id="21" minimum="0" maximum="1"/>    
+      <multiplicity id="18" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="22">    
+  <nesting id="19">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="6"/>  
   </nesting>  
-  <association id="23">    
+  <association id="20">    
     <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="24" name="worldObjects">        
+      <attribute id="21" name="worldObjects">        
         <position height="18" width="73" x="931" y="219"/>      
       </attribute>      
-      <multiplicity id="25" minimum="0" maximum="2147483647"/>    
+      <multiplicity id="22" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="26">    
+  <realization id="23">    
     <end type="SOURCE" refId="11"/>    
     <end type="TARGET" refId="7"/>  
   </realization>  
-  <generalization id="27">    
+  <generalization id="24">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="1"/>  
   </generalization>  
-  <realization id="28">    
+  <realization id="25">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="9"/>  
   </realization>  
-  <association id="29">    
+  <association id="26">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="30" name="object">        
+      <attribute id="27" name="object">        
         <position height="18" width="37" x="1262" y="338"/>      
       </attribute>      
-      <multiplicity id="31" minimum="0" maximum="1"/>    
+      <multiplicity id="28" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="32">    
+  <realization id="29">    
     <end type="SOURCE" refId="10"/>    
     <end type="TARGET" refId="8"/>  
   </realization>  
