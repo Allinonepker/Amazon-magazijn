@@ -2,53 +2,41 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
 
-class Box implements Object3D, Updatable {
+public class Dock implements Object3D, Updatable {
 	private UUID uuid;
 
     private double x = 0;
     private double y = -1.0;
     private double z = 0;
     
+    
     private double rotationX = 0;
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    private boolean queued = false;
-    private boolean taken = false;
+    private boolean full = false;
     
-    public Box(double x, double z, double y) {
+    public Dock(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.y = y;
     }
     
-    public boolean getTaken() {
-    	return taken;
+    public boolean isFull() {
+    	return full;
     }
     
-    public void setQueued(boolean queued) {
-    	this.queued = queued;
+    public void setFull(boolean full) {
+    	this.full = full;
+    	
     }
     
-    public boolean getQueued() {
-    	return queued;
-    }
-    public void giveTaken(boolean taken) {
-    	this.taken = taken;
-    }
     
     @Override
     public boolean update() {
     	
-//    	if (this.x != this.startX && this.z != this.startZ) {
-//        	this.x += (this.startX - this.x) / 20;
-//        	this.z += (this.startZ - this.z) / 20;
-//        	if (Math.abs(this.startX - this.x) < 2 || Math.abs(this.startZ - this.y) < 2) {
-//        		this.x += (this.startX - this.x);
-//        		this.z += (this.startZ - this.z);
-//        	}
-        	return true;
+    	return true;
     }
 
     @Override
@@ -64,7 +52,7 @@ class Box implements Object3D, Updatable {
          * is op de client, en die verstuurd moet kunnen worden naar de browser. In de
          * javascript code wordt dit dan weer verder afgehandeld.
          */
-        return Box.class.getSimpleName().toLowerCase();
+        return Dock.class.getSimpleName().toLowerCase();
     }
 
     @Override

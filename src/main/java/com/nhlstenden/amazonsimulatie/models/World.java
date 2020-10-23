@@ -31,13 +31,28 @@ public class World implements Model {
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
      * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
      */
-    public World() {
+    public World() {    	
+    	int[][] layout = new Layout().Getlayout();
+    	
         this.worldObjects = new ArrayList<>();
-        this.worldObjects.add(new Robot(25.0, 0.0, 10.0));
-        this.worldObjects.add(new Robot(25.0, 0.0, 20.0));
-        this.worldObjects.add(new Box(5.5, 0.0, 7.0));
-        this.worldObjects.add(new Box(5.5, 0.0, 14.0));
-        this.worldObjects.add(new Box(5.5, 0.0, 21.0));
+        
+        for (int i = 0; i < 30; i++) { 
+            for (int j = 0; j < 30; j++) {
+            	if (layout[i][j] == 1) {
+            		this.worldObjects.add(new RobotPath(i,j,0));
+            	}
+            	if (layout[i][j] == 2) {
+                	this.worldObjects.add(new Robot(i,j,0.15));
+                	this.worldObjects.add(new RobotPath(i,j,0));
+            	}
+            	if (layout[i][j] == 3) {
+                	this.worldObjects.add(new Box(i,j,0.5));
+            	}
+            	if (layout[i][j] == 5) {
+                	this.worldObjects.add(new Dock(i,j,0));
+            	}
+            }
+        }
     }
 
     /*
@@ -49,26 +64,29 @@ public class World implements Model {
      * is het onderdeel niet veranderd en hoeft er dus ook geen signaal naar de controller verstuurd
      * te worden.
      */
-    
     @Override
     public void update() {
-        for (Object3D robot : this.worldObjects) {
-        	for (Object3D box : this.worldObjects) {
-        		if(robot instanceof Robot) {
-        			if (box instanceof Box) {
-        				if (((Robot) robot).getTask() == null) {
-        					if (((Box) box).getTaken() == false) {
-        						((Robot) robot).giveTask(box);
-        						((Box) box).giveTaken(true);
-        					}
-        				}
-        			}
-                }
-            }
-        }
+    	for (Object3D robot : this.worldObjects) {
+    		for (Object3D box : this.worldObjects) {
+    			if (robot instanceof Robot) {
+    				if (box instanceof Box) {
+    	    			if (((Robot) robot).getTask() == null) {
+    	    				if (((Box) box).getQueued() == false) {
+    	    					((Robot) robot).giveTask((Box) box);
+    	    					((Box) box).setQueued(true);
+    	    				}
+    	    			}
+    				}
+    			}
+
+    		}
+     	}
+    	
         for (Object3D object : this.worldObjects) {
-            if (((Updatable)object).update()) {
-                pcs.firePropertyChange(Model.UPDATE_COMMAND, null, new ProxyObject3D(object));
+            if(object instanceof Updatable) {
+                if (((Updatable)object).update()) {
+                    pcs.firePropertyChange(Model.UPDATE_COMMAND, null, new ProxyObject3D(object));
+                }
             }
         }
     }
