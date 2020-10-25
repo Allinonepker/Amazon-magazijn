@@ -10,31 +10,32 @@ class shortestpath {
 	
 	public List<int[]> getShortestpath(int[][] layout, int startX, int startZ, int endX, int endZ){
 		
-		List<node> nodelist = getnodes(layout);
-		List<node> unvisited = nodelist;
-		List<node> visited = new ArrayList<node>();
+		List<Node> nodelist = getnodes(layout);
+		List<Node> unvisited = nodelist;
+		List<Node> visited = new ArrayList<Node>();
 		List<int[]> shortestpath = new ArrayList<int[]>();
 
 		
-		node currentnode = getNode(startX, startZ, nodelist);
-		node endnode = getNode(endX, endZ, nodelist);
+		Node currentnode = getNode(startX, startZ, nodelist);
+		Node endnode = getNode(endX, endZ, nodelist);
 		
 		currentnode.Setshortestdistance(0);
 		
 		
 		while(!unvisited.isEmpty()) {
-			for(node i : unvisited) {
+			currentnode = unvisited.get(0);
+			for(Node i : unvisited) {
 				if(i.getshortestdistance() < currentnode.getshortestdistance()) {
 					currentnode = i;
 				}
 			}
 		
-			List<node> neighbours = getNeighbours(currentnode, unvisited);
+			List<Node> neighbours = getNeighbours(currentnode, unvisited);
 			
 			int currentX = currentnode.getX();
 			int currentZ = currentnode.getZ();
 			
-			for(node node: neighbours) {
+			for(Node node: neighbours) {
 				unvisited.remove(node);
 				node.Setpreviousnode(currentX, currentZ);
 				node.Setshortestdistance(currentnode.getshortestdistance() + 1);
@@ -43,17 +44,18 @@ class shortestpath {
 			
 			visited.add(currentnode);
 			unvisited.remove(currentnode);
-			currentnode.Setshortestdistance(Integer.MAX_VALUE);
 		}
 		
-		node prevnode = endnode;
-		while(prevnode == getNode(startX, startZ, visited)) {
-			for(node i : visited) {
+		Node prevnode = endnode;
+		Node startnode = getNode(startX, startZ, visited);
+		
+		while(prevnode != startnode) {
+			for(Node i : visited) {
 				if(prevnode == i) {
 					int prevnodeX = i.getprevX();
 					int prevnodeZ = i.getprevZ();
 					prevnode = getNode(prevnodeX, prevnodeZ, visited);
-					int[] nodexy = {prevnodeX, prevnodeZ};
+					int[] nodexy = {i.getX(), i.getZ()};
 					shortestpath.add(0, nodexy);
 				}
 			}
@@ -62,9 +64,9 @@ class shortestpath {
 	}
 	
 	
-	private node getNode(int X, int Z, List<node> nodelist) {
+	private Node getNode(int X, int Z, List<Node> nodelist) {
 		for(int i = 0;i < nodelist.size(); i++) {
-			node node = nodelist.get(i);
+			Node node = nodelist.get(i);
 			if(node.getX() == X && node.getZ() == Z)
 				return node;
 		}
@@ -72,16 +74,16 @@ class shortestpath {
 	}
 	
 	
-	private List<node> getNeighbours(node point, List<node> nodelist) {
+	private List<Node> getNeighbours(Node point, List<Node> nodelist) {
 		
 		int X = point.getX();
 		int Z = point.getZ();
-		List<node> Neighbours = new ArrayList<node>();
+		List<Node> Neighbours = new ArrayList<Node>();
 		
-		for(node i: nodelist) {
+		for(Node i: nodelist) {
 			
-			int Xinspecting = point.getX();
-			int Zinspecting = point.getZ();
+			int Xinspecting = i.getX();
+			int Zinspecting = i.getZ();
 			
 			if((X == Xinspecting && (Z - 1) == Zinspecting) || (X == Xinspecting && (Z + 1) == Zinspecting) || ((X - 1) == Xinspecting && Z == Zinspecting) || ((X + 1) == Xinspecting && Z == Zinspecting)) {
 				Neighbours.add(i);
@@ -91,14 +93,14 @@ class shortestpath {
 	}
 	
 	
-	private List<node> getnodes(int[][] layout){
+	private List<Node> getnodes(int[][] layout){
 		
-		List<node> nodes = new ArrayList<node>();
+		List<Node> nodes = new ArrayList<Node>();
 			
 		for(int i = 0; i < 30; i++) {
-			for(int j = 0; j <30; i++) {
+			for(int j = 0; j < 30; j++) {
 				if(layout[i][j] == 1) {
-					node newnode = new node(i,j);
+					Node newnode = new Node(i,j);
 					nodes.add(newnode);
 				}
 			}

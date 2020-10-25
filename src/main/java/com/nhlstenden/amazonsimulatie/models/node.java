@@ -1,19 +1,20 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-class node {
+class Node {
 	
-	private int X = 0;
-	private int Z = 0;
+	private int X;
+	private int Z;
 	
-	private int previousX = 0;
-	private int previousZ = 0;
+	private int previousX;
+	private int previousZ;
 	
-	private int Shortestdistance = 999;
+	private int Shortestdistance = Integer.MAX_VALUE;
 	
-	node(int X, int Z) {
-		this.X = X;
-		this.Z = Z;	
+	public Node(int x, int z) {
+		this.X = x;
+		this.Z = z;	
 	}
+	
 	public int getX() {
 		return X; 
 	}
