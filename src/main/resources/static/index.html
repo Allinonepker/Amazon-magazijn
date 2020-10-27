@@ -39,9 +39,9 @@
                 cameraControls.maxPolarAngle = Math.PI / 2.1;
                 cameraControls.rotateSpeed = 0.04;
                 cameraControls.panSpeed = 0.04;
-                camera.position.z = 15;
-                camera.position.y = 5;
-                camera.position.x = 15;
+                camera.position.z = 30;
+                camera.position.y = 10;
+                camera.position.x = 30;
                 cameraControls.update();
                 scene = new THREE.Scene();
 
@@ -63,7 +63,7 @@
                 var light = new THREE.AmbientLight(0x404040);
                 light.intensity = 4;
                 scene.add(light);
-            
+
                 var mtlLoader = new THREE.MTLLoader();
 
                 //gebouw
@@ -72,28 +72,28 @@
                 var listbuilding = [[20,7.5, 0], [20, 22.5, 0]]
                 for (var i = 0; i < listbuilding.length; i++) {
                     var plane = new THREE.Mesh(geometry, material);
-                    
+
                     plane.position.x = listbuilding[i][0];
                     plane.position.y = 4.5;
                     plane.position.z = listbuilding[i][1];
-                    
+
                     //plane.rotation.x += Math.PI / listbuilding[i][2]
                     scene.add(plane);
                 }
-                
+
                 var geometry = new THREE.PlaneGeometry(15, 10);
                 var listbuildingver = [[11.5,15], [28.5, 15, 0]]
                 for (var i = 0; i < listbuildingver.length; i++) {
                     var plane = new THREE.Mesh(geometry, material);
-                    
+
                     plane.position.x = listbuildingver[i][0];
                     plane.position.y = 4.5;
                     plane.position.z = listbuildingver[i][1];
-                    
+
                     plane.rotation.y += Math.PI / 2
                     scene.add(plane);
                 }
-                
+
                 //bovenkant
                 //var geometry = new THREE.PlaneGeometry(17, 15);
                 //var plane = new THREE.Mesh(geometry, material);
@@ -106,40 +106,41 @@
                 //scene.add(plane);
 
                 //road
-                
+
                 mtlLoader.load("textures/road/tile_wideStraight.mtl", function(materials) {
                     materials.preload();
                     const objLoader = new THREE.OBJLoader();
                     objLoader.setMaterials(materials);
                     objLoader.load("textures/road/tile_wideStraight.obj", function(mesh){
-                        
+
                         mesh.traverse(function(node) {
                             if (node instanceof THREE.Mesh) {
                                 node.castShadow = true;
                                 node.receiveShadow = true;
                             }
                         })
-                        
+
                         scene.add(mesh);
                         mesh.position.set(55, 0, 15);
                         mesh.rotation.y = Math.PI / 2;
                         mesh.scale.set(5,1,50);
-                        
+
                     });
                 });
-                
-                /*
+
                 const loader = new THREE.CubeTextureLoader();
+                //dust == daytime
+                //Divine == nighttime
                 const texture = loader.load([
-                    'textures/cubemap/px.png',
-                    'textures/cubemap/nx.png',
-                    'textures/cubemap/py.png',
-                    'textures/cubemap/ny.png',
-                    'textures/cubemap/pz.png',
-                    'textures/cubemap/nz.png'
+                	'textures/skybox/dust_ft.jpg',
+                	'textures/skybox/dust_bk.jpg',
+                	'textures/skybox/dust_up.jpg',
+                    'textures/skybox/dust_dn.jpg',
+                    'textures/skybox/dust_rt.jpg',
+                    'textures/skybox/dust_lf.jpg'
                 ]);
                 scene.background = texture;
-                */
+
             }
 
             function onWindowResize() {
@@ -201,19 +202,19 @@
                 	            map: new THREE.TextureLoader().load("textures/crate/crate1_diffuse.png"),
                 	            bumpMap: new THREE.TextureLoader().load("textures/crate/crate1_bump.png"),
                 	        })
-                    	    
+
                     	    crate = new THREE.Mesh(BoxGeometry, BoxMaterials);
-                  			
+
                     		var group = new THREE.Group();
-                    		
+
                             crate.castShadow = true;
                             crate.receiveShadow = true;
                             group.add(crate);
                             scene.add(group);
-                            
+
                             worldObjects[command.parameters.uuid] = group;
                     	}
-                    	
+
                         if (command.parameters.type == "robotpath") {
                             var geometry = new THREE.PlaneGeometry(1, 1);
                             var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/concrete.jpeg"), side: THREE.DoubleSide });
@@ -223,7 +224,7 @@
                             plane.position.x = 0.5;
                             plane.position.z = 0.5;
                             plane.position.y = 0.01;
-                            
+
                             var group = new THREE.Group();
                             group.add(plane);
 
@@ -238,7 +239,7 @@
                             const objLoader = new THREE.OBJLoader();
                             objLoader.setMaterials(materials);
                             objLoader.load("textures/truck/delivery.obj", function(truck){
-                                
+
                                 truck.traverse(function(node) {
                                     if (node instanceof THREE.Mesh) {
                                         node.castShadow = true;
@@ -248,39 +249,39 @@
                                 scene.add(truck);
                                 truck.rotation.y = Math.PI / 2;
                                 truck.scale.set(5, 5, 5);
-                                
+
                                 truck.position.x = command.parameters.x;
                                 truck.position.y = command.parameters.y;
                                 truck.position.z = command.parameters.z;
-                                
+
                             });
                         });
                     }
                     var tiles = ["tile_tree", "tile_treeDouble", "tile_treeQuad"];
-                        
+
                     if (command.parameters.type == "tile") {
                         //var tile = tiles[Math.floor(Math.random() * tiles.length)];
                         var tile = "tile";
                         //window.alert(tile);
                         mtlLoader.load("textures/tiles/" + tile + ".mtl", function(materials) {
-        
+
                             materials.preload();
                             const objLoader = new THREE.OBJLoader();
                             objLoader.setMaterials(materials);
                             objLoader.load("textures/tiles/" + tile + ".obj", function(mesh){
-                                
+
                                 mesh.traverse(function(node) {
                                     if (node instanceof THREE.Mesh) {
                                         node.castShadow = true;
                                         node.receiveShadow = true;
                                     }
                                 })
-                                                                
+
                                 scene.add(mesh);
                                 mesh.position.x = command.parameters.x;
                                 mesh.position.y = command.parameters.y;
                                 mesh.position.z = command.parameters.z;
-                                
+
                             });
                         });
                     }
@@ -309,7 +310,7 @@
     <script src="OrbitControls.js"></script>
     <script src="OBJLoader.js"></script>
     <script src="MTLLoader.js"></script>
-        
+
 </body>
 
 </html>
