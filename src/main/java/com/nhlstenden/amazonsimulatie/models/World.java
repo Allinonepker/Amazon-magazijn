@@ -36,7 +36,7 @@ public class World implements Model {
     	
         this.worldObjects = new ArrayList<>();
         
-        //this.worldObjects.add(new Truck(37, 0, 15));
+        this.worldObjects.add(new Truck(37, 0, 15));
         
         for (int i = 0; i < layout[0].length; i++) { 
             for (int j = 0; j < layout[1].length; j++) {

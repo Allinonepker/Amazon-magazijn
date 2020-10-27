@@ -170,9 +170,9 @@
                     //Wanneer het object dat moet worden geupdate nog niet bestaat (komt niet voor in de lijst met worldObjects op de client),
                     //dan wordt het 3D model eerst aangemaakt in de 3D wereld.
                     if (Object.keys(worldObjects).indexOf(command.parameters.uuid) < 0) {
-                        //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
+
                         
-                        if (command.parameters.type = "truck") {
+                        if (command.parameters.type == "truck") {
                         	mtlLoader.load("textures/truck/delivery.mtl", function(materials) {
                                 materials.preload();
                                 const objLoader = new THREE.OBJLoader();
