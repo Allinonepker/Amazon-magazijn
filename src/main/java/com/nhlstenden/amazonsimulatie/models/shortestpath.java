@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class shortestpath {
+class Shortestpath {
 	
-	public shortestpath() {}
+	public Shortestpath() {}
 	
 	public List<int[]> getShortestpath(int[][] layout, int startX, int startZ, int endX, int endZ){
 		

@@ -15,11 +15,11 @@ class Box implements Object3D, Updatable {
 
     private boolean taken = false;
     
-    public Box(Double x, Double y, Double z) {
+    public Box(double x, double y, double z) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
-      
+        this.y = y;
     }
     
     public boolean getTaken() {

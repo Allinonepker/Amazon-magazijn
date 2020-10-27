@@ -1,19 +1,16 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-
 
 /*
  * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
  * een robot geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
  */
-class Robot implements Object3D, Updatable {
+class Truck implements Object3D, Updatable {
     private UUID uuid;
 
-    private List<Position> actionlist = new ArrayList<Position>();
+ //   private boolean goingBack = false;
     
     private double x = 0;
     private double y = 0;
@@ -23,13 +20,12 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Robot(double x, double z, double y) {
+    public Truck(double x, double y, double z) {
         this.uuid = UUID.randomUUID();
-        this.x = x + 0.5;
-        this.z = z + 0.5;
+        this.x = x;
+        this.z = z;
         this.y = y;
     }
-
     /*
      * Deze update methode wordt door de World aangeroepen wanneer de
      * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
@@ -45,34 +41,9 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        if(!actionlist.isEmpty()){
-            Position action = actionlist.remove(0);
-            this.x = action.getX();
-            this.z = action.getZ();
-            this.y = action.getY();
-
-            this.rotationX = action.getrotationX();
-            this.rotationZ = action.getrotationZ();
-            this.rotationY = action.getrotationY();
-            return true;
-        }
-        
-            
-        return false;
+        return true;
     }
 
-    public Position getPosition(){
-        Position position = new Position(this.x, this.z, this.y, this.rotationX, this.rotationZ, this.rotationY);
-        return position;
-    }
-
-
-
-    public void FeedQueue(List<Position> newactions){
-        for(Position i : newactions)
-        this.actionlist.add(i);
-    }
-    
     @Override
     public String getUUID() {
         return this.uuid.toString();
@@ -86,7 +57,7 @@ class Robot implements Object3D, Updatable {
          * is op de client, en die verstuurd moet kunnen worden naar de browser. In de
          * javascript code wordt dit dan weer verder afgehandeld.
          */
-        return Robot.class.getSimpleName().toLowerCase();
+        return Truck.class.getSimpleName().toLowerCase();
     }
     
     @Override

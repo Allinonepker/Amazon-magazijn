@@ -33,21 +33,29 @@ public class World implements Model {
      */
     public World() {
 
-    	int[][] layout = new layout().Getlayout();
+    	int[][] layout = new Layout().Getlayout();
     	
         this.worldObjects = new ArrayList<>();
         
-        for (int i = 0; i < 30; i++) { 
-            for (int j = 0; j < 30; j++) {
+        this.worldObjects.add(new Truck(37, 0, 15));
+
+        for (int i = 0; i < layout[0].length; i++) { 
+            for (int j = 0; j < layout[1].length; j++) {
+            	if (layout[i][j] == 0) {
+            		this.worldObjects.add(new Tile(i,j,0));
+            	}
             	if (layout[i][j] == 1) {
-            	this.worldObjects.add(new RobotPath((29-i),j,0));
+            		this.worldObjects.add(new RobotPath(i,j,0.1));
             	}
             	if (layout[i][j] == 2) {
-                	this.worldObjects.add(new Robot((29-i),j,0));
-            	
+                	this.worldObjects.add(new Robot(i,j,0.15));
+                	this.worldObjects.add(new RobotPath(i,j,0.1));
+            	}
+            	if (layout[i][j] == 3) {
+                	this.worldObjects.add(new Box((double)i,(double)j,0.5));
             	}
             }
-        }
+        } 
     }
 
     /*
