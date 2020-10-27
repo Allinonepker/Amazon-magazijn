@@ -10,7 +10,7 @@ import java.util.UUID;
 class Truck implements Object3D, Updatable {
     private UUID uuid;
 
- //   private boolean goingBack = false;
+    private boolean goingBack = false;
     
     private double x = 0;
     private double y = 0;
@@ -41,6 +41,7 @@ class Truck implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
+    	this.x += 0.5;
         return true;
     }
 

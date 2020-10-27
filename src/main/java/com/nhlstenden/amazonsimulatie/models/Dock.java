@@ -2,7 +2,7 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
 
-public class Tile implements Object3D {
+public class Dock implements Object3D{
 	
     private UUID uuid;
     
@@ -14,12 +14,13 @@ public class Tile implements Object3D {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Tile(double x, double z, double y) {
+    public Dock(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.y = y;
     }
+    
 
     @Override
     public String getUUID() {
@@ -29,7 +30,7 @@ public class Tile implements Object3D {
     @Override
     public String getType() {
 
-        return Tile.class.getSimpleName().toLowerCase();
+        return Dock.class.getSimpleName().toLowerCase();
     }
     
     @Override
