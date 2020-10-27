@@ -33,7 +33,10 @@ public class World implements Model {
      */
     public World() {
 
-    	int[][] layout = new Layout().Getlayout();
+        int[][] layout = new Layout().Getlayout();
+        List<Object3D> robots = new ArrayList<Object3D>();
+        List<Object3D> boxes = new ArrayList<Object3D>();
+        List<Object3D> storageplaces = new ArrayList<Object3D>();
     	
         this.worldObjects = new ArrayList<>();
         
@@ -48,14 +51,24 @@ public class World implements Model {
             		this.worldObjects.add(new RobotPath(i,j,0.1));
             	}
             	if (layout[i][j] == 2) {
-                	this.worldObjects.add(new Robot(i,j,0.15));
+                    Robot robot = new Robot(i,j,0.15);
+                    robots.add(robot);
+                	this.worldObjects.add(robot);
                 	this.worldObjects.add(new RobotPath(i,j,0.1));
             	}
             	if (layout[i][j] == 3) {
-                	this.worldObjects.add(new Box((double)i,(double)j,0.5));
-            	}
+                    Box box = new Box(i, j, 0.5);
+                    boxes.add(box);
+                	this.worldObjects.add(box);
+                }
+                if (layout[i][j] == 4) {
+
+                }
             }
         } 
+
+
+
     }
 
     /*

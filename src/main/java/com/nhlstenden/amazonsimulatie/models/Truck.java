@@ -41,6 +41,7 @@ class Truck implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
+        this.x += 0.5;
         return true;
     }
 
