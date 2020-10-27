@@ -1,5 +1,7 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -11,21 +13,22 @@ import java.util.UUID;
 class Robot implements Object3D, Updatable {
     private UUID uuid;
 
-    private Object3D task = null;
-    private boolean goingBack = false;
+
+
+    private List<Position> actionlist = new ArrayList<Position>();
     
     private double x = 0;
     private double y = 0;
     private double z = 0;
 
     private double rotationX = 0;
-    private double rotationY = 0;
+    private double rotationY = Math.PI/2;
     private double rotationZ = 0;
 
     public Robot(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
-        this.x = x;
-        this.z = z;
+        this.x = x + 0.5;
+        this.z = z + 0.5;
         this.y = y;
     }
 
@@ -44,13 +47,34 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-    	
-            this.rotationY = rotationY + Math.PI/16;
+            if(!actionlist.isEmpty()){
+                Position action = actionlist.remove(0);
+                this.x = action.getX();
+                this.z = action.getZ();
+                this.y = action.getY();
 
+                this.rotationX = action.getrotationX();
+                this.rotationZ = action.getrotationZ();
+                this.rotationY = action.getrotationY();
+                return true;
+            }
         
-        return true;
+            else
+        return false;
     }
 
+    public Position getPosition(){
+        Position position = new Position(this.x, this.z, this.y, this.rotationX, this.rotationZ, this.rotationY);
+        return position;
+    }
+
+
+
+    public void FeedQueue(List<Position> newactions){
+        for(Position i : newactions)
+        this.actionlist.add(i);
+    }
+    
     @Override
     public String getUUID() {
         return this.uuid.toString();
