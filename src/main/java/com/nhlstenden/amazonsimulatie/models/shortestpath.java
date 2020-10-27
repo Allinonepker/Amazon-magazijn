@@ -16,7 +16,7 @@ class shortestpath {
 		List<int[]> shortestpath = new ArrayList<int[]>();
 
 		
-		Node currentnode = getNode(startX, startZ, nodelist);
+		Node currentnode = getNode(startX, startZ, unvisited);
 		Node endnode = getNode(endX, endZ, nodelist);
 		
 		currentnode.Setshortestdistance(0);
@@ -100,7 +100,7 @@ class shortestpath {
 		for(int i = 0; i < 30; i++) {
 			for(int j = 0; j < 30; j++) {
 				if(layout[i][j] == 1) {
-					Node newnode = new Node(i,j);
+					Node newnode = new Node((29-i),j);
 					nodes.add(newnode);
 				}
 			}
