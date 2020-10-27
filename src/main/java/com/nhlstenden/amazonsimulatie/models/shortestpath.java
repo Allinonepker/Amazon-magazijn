@@ -17,7 +17,12 @@ class Shortestpath {
 
 		
 		Node currentnode = getNode(startX, startZ, unvisited);
+		if(currentnode == null)
+		currentnode = new Node(startX, startZ);
+
 		Node endnode = getNode(endX, endZ, nodelist);
+		if(endnode == null)
+		endnode = new Node(endX, endZ);
 		
 		currentnode.Setshortestdistance(0);
 		
@@ -100,7 +105,7 @@ class Shortestpath {
 		for(int i = 0; i < 30; i++) {
 			for(int j = 0; j < 30; j++) {
 				if(layout[i][j] == 1) {
-					Node newnode = new Node((29-i),j);
+					Node newnode = new Node((i),j);
 					nodes.add(newnode);
 				}
 			}
