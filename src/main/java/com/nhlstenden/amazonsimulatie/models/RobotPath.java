@@ -10,7 +10,7 @@ public class RobotPath implements Object3D {
     private double y = 0;
     private double z = 0;
 
-    private double rotationX = 0;
+    private double rotationX = Math.PI / 2;
     private double rotationY = 0;
     private double rotationZ = 0;
 

@@ -1,29 +1,17 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.util.List;
-import java.util.Queue;
 import java.util.UUID;
-import java.util.function.IntPredicate;
-
-import javax.xml.transform.ErrorListener;
-
 import org.javatuples.*;
-import org.springframework.expression.spel.ast.Literal;
 
 /*
  * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
  * een robot geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
  */
-class Robot implements Object3D, Updatable {
+class Truck implements Object3D, Updatable {
     private UUID uuid;
 
-    int[][] layout = new Layout().Getlayout();
-    
-    private Object3D task = null;
     private boolean goingBack = false;
-    
-    private List<int[]> pathList = null;
     
     private double x = 0;
     private double y = 0;
@@ -33,19 +21,11 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Robot(double x, double z, double y) {
+    public Truck(double x, double y, double z) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.y = y;
-    }
-    
-    public Object3D getTask() {
-    	return task;
-    }
-    
-    public void giveTask(Box box) {
-    	this.task = box;
     }
     /*
      * Deze update methode wordt door de World aangeroepen wanneer de
@@ -62,12 +42,6 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-    	if (this.task != null) {
-        	if (pathList == null) {
-        		
-        	}
-    	}
-
         return true;
     }
 
@@ -84,7 +58,7 @@ class Robot implements Object3D, Updatable {
          * is op de client, en die verstuurd moet kunnen worden naar de browser. In de
          * javascript code wordt dit dan weer verder afgehandeld.
          */
-        return Robot.class.getSimpleName().toLowerCase();
+        return Truck.class.getSimpleName().toLowerCase();
     }
     
     @Override

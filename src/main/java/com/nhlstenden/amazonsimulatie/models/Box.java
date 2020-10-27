@@ -40,14 +40,7 @@ class Box implements Object3D, Updatable {
     
     @Override
     public boolean update() {
-    	
-//    	if (this.x != this.startX && this.z != this.startZ) {
-//        	this.x += (this.startX - this.x) / 20;
-//        	this.z += (this.startZ - this.z) / 20;
-//        	if (Math.abs(this.startX - this.x) < 2 || Math.abs(this.startZ - this.y) < 2) {
-//        		this.x += (this.startX - this.x);
-//        		this.z += (this.startZ - this.z);
-//        	}
+
         	return true;
     }
 
