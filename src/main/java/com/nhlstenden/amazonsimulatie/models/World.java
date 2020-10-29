@@ -37,13 +37,10 @@ public class World implements Model {
     	
         this.worldObjects = new ArrayList<>();
         
-        this.worldObjects.add(new Truck(37, 0, 15));
+        this.worldObjects.add(new Truck(100, 0, 15));
 
         for (int i = 0; i < layout[0].length; i++) { 
             for (int j = 0; j < layout[1].length; j++) {
-            	if (layout[i][j] == 0) {
-            		this.worldObjects.add(new Tile(i,j,0));
-            	}
             	if (layout[i][j] == 1) {
             		this.worldObjects.add(new RobotPath(i,j,0.1));
             	}
@@ -52,8 +49,12 @@ public class World implements Model {
                 	this.worldObjects.add(new RobotPath(i,j,0.1));
             	}
             	if (layout[i][j] == 3) {
-                	this.worldObjects.add(new Box((double)i,(double)j,0.5));
+                	this.worldObjects.add(new Box(i,j,0.5));
             	}
+            	if (layout[i][j] == 4) {
+                	this.worldObjects.add(new Dock(i,j,0.1));
+            	}
+            	
             }
         } 
     }
@@ -86,6 +87,7 @@ public class World implements Model {
         pcs.addPropertyChangeListener(pcl);
     }
 
+    
     /*
      * Deze methode geeft een lijst terug van alle objecten in de wereld. De lijst is echter wel
      * van ProxyObject3D objecten, voor de veiligheid. Zo kan de informatie wel worden gedeeld, maar
