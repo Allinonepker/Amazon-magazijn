@@ -15,7 +15,7 @@ class Box implements Object3D, Updatable {
 
     private boolean taken = false;
     
-    public Box(double x, double y, double z) {
+    public Box(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;

@@ -25,8 +25,8 @@ class Robot implements Object3D, Updatable {
 
     public Robot(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
-        this.x = x + 0.5;
-        this.z = z + 0.5;
+        this.x = x;
+        this.z = z;
         this.y = y;
     }
 
@@ -56,7 +56,6 @@ class Robot implements Object3D, Updatable {
             this.rotationY = action.getrotationY();
             return true;
         }
-        
             
         return false;
     }
