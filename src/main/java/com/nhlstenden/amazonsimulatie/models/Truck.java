@@ -11,13 +11,16 @@ class Truck implements Object3D, Updatable {
     private UUID uuid;
 
     private boolean goingBack = false;
+    private boolean goingToDock = true;
+    
+    private boolean spawnedBoxes = false;
     
     private double x = 0;
     private double y = 0;
     private double z = 0;
 
     private double rotationX = 0;
-    private double rotationY = 0;
+    private double rotationY = Math.PI / 2;
     private double rotationZ = 0;
 
     public Truck(double x, double y, double z) {
@@ -41,15 +44,39 @@ class Truck implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-    	this.x += 0.5;
-        return true;
+    	if (goingToDock == true) {
+    		if (this.x != 37 ) {
+            	this.x -= 1;
+            	return true;
+    		}
+    		goingToDock = false;
+			return false;
+    	}
+    	
+    	if (goingBack == true) {
+    		if (this.x != 100) {
+    			this.x += 1;
+    			return true;
+    		}
+    		goingBack = false;
+    		return false;
+    	}
+
+        return false;
     }
 
     @Override
     public String getUUID() {
         return this.uuid.toString();
     }
-
+    
+    public void setSpawnedBoxes(boolean spawnedBoxes) {
+    	this.spawnedBoxes = spawnedBoxes;
+    }
+    public boolean getState() {
+    	return !(goingBack && goingToDock);
+    }
+    
     @Override
     public String getType() {
         /*
