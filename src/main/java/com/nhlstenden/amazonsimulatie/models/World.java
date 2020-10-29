@@ -54,6 +54,7 @@ public class World implements Model {
                 	this.worldObjects.add(new RobotPath(i,j,0.1));
             	}
             	if (layout[i][j] == 3) {
+<<<<<<< HEAD
                     Box box = new Box(i, j, 0.5);
                     boxes.add(box);
                 	this.worldObjects.add(box);
@@ -61,6 +62,14 @@ public class World implements Model {
                 if (layout[i][j] == 4) {
 
                 }
+=======
+                	this.worldObjects.add(new Box(i,j,0.5));
+            	}
+            	if (layout[i][j] == 4) {
+                	this.worldObjects.add(new Dock(i,j,0.1));
+            	}
+            	
+>>>>>>> master
             }
         } 
 

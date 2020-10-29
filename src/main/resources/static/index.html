@@ -138,13 +138,15 @@
                 });
                 
                 const loader = new THREE.CubeTextureLoader();
+                //dust == daytime
+                //Divine == nighttime
                 const texture = loader.load([
-                    'textures/cubemap/px.png',
-                    'textures/cubemap/nx.png',
-                    'textures/cubemap/py.png',
-                    'textures/cubemap/ny.png',
-                    'textures/cubemap/pz.png',
-                    'textures/cubemap/nz.png'
+                	'textures/skybox/dust_ft.jpg',
+                	'textures/skybox/dust_bk.jpg',
+                	'textures/skybox/dust_up.jpg',
+                    'textures/skybox/dust_dn.jpg',
+                    'textures/skybox/dust_rt.jpg',
+                    'textures/skybox/dust_lf.jpg'
                 ]);
                 scene.background = texture;
                 
