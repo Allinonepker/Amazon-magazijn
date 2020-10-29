@@ -39,9 +39,9 @@
                 cameraControls.maxPolarAngle = Math.PI / 2.1;
                 cameraControls.rotateSpeed = 0.04;
                 cameraControls.panSpeed = 0.04;
-                camera.position.z = 30;
-                camera.position.y = 10;
-                camera.position.x = 30;
+                camera.position.z = 15;
+                camera.position.y = 5;
+                camera.position.x = 15;
                 cameraControls.update();
                 scene = new THREE.Scene();
 
@@ -65,7 +65,6 @@
                 var light = new THREE.AmbientLight(0x404040);
                 light.intensity = 4;
                 scene.add(light);
-<<<<<<< HEAD
             
                 var pointlight = new THREE.PointLight(0xff0000, 1, 100)
                 light.position.set( 50, 50, 50 );
@@ -76,18 +75,12 @@
              
                 
 				/*
-=======
-
-                var mtlLoader = new THREE.MTLLoader();
-
->>>>>>> master
                 //gebouw
                 var geometry = new THREE.PlaneGeometry(17, 10);
                 var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/stone.jpg"), side: THREE.DoubleSide });
                 var listbuilding = [[20,7.5, 0], [20, 22.5, 0]]
                 for (var i = 0; i < listbuilding.length; i++) {
                     var plane = new THREE.Mesh(geometry, material);
-<<<<<<< HEAD
                     
                     plane.position.x = listbuilding[i][0];
                     plane.position.y = 4.5;
@@ -97,22 +90,10 @@
                     scene.add(plane);
                 }
                 
-=======
-
-                    plane.position.x = listbuilding[i][0];
-                    plane.position.y = 4.5;
-                    plane.position.z = listbuilding[i][1];
-
-                    //plane.rotation.x += Math.PI / listbuilding[i][2]
-                    scene.add(plane);
-                }
-
->>>>>>> master
                 var geometry = new THREE.PlaneGeometry(15, 10);
                 var listbuildingver = [[11.5,15], [28.5, 15, 0]]
                 for (var i = 0; i < listbuildingver.length; i++) {
                     var plane = new THREE.Mesh(geometry, material);
-<<<<<<< HEAD
                     
                     plane.position.x = listbuildingver[i][0];
                     plane.position.y = 4.5;
@@ -122,17 +103,6 @@
                     scene.add(plane);
                 }
                 */
-=======
-
-                    plane.position.x = listbuildingver[i][0];
-                    plane.position.y = 4.5;
-                    plane.position.z = listbuildingver[i][1];
-
-                    plane.rotation.y += Math.PI / 2
-                    scene.add(plane);
-                }
-
->>>>>>> master
                 //bovenkant
                 //var geometry = new THREE.PlaneGeometry(17, 15);
                 //var plane = new THREE.Mesh(geometry, material);
@@ -145,28 +115,19 @@
                 //scene.add(plane);
 
                 //road
-<<<<<<< HEAD
                 
-=======
-
->>>>>>> master
                 mtlLoader.load("textures/road/tile_wideStraight.mtl", function(materials) {
                     materials.preload();
                     const objLoader = new THREE.OBJLoader();
                     objLoader.setMaterials(materials);
                     objLoader.load("textures/road/tile_wideStraight.obj", function(mesh){
-<<<<<<< HEAD
                         
-=======
-
->>>>>>> master
                         mesh.traverse(function(node) {
                             if (node instanceof THREE.Mesh) {
                                 node.castShadow = true;
                                 node.receiveShadow = true;
                             }
                         })
-<<<<<<< HEAD
                         
                         scene.add(mesh);
                         mesh.position.set(80, 0.2, 15);
@@ -179,19 +140,6 @@
                 const loader = new THREE.CubeTextureLoader();
                 //dust == daytime
                 //Divine == nighttime
-=======
-
-                        scene.add(mesh);
-                        mesh.position.set(55, 0, 15);
-                        mesh.rotation.y = Math.PI / 2;
-                        mesh.scale.set(5,1,50);
-
-                    });
-                });
-
-
-                const loader = new THREE.CubeTextureLoader();
->>>>>>> master
                 const texture = loader.load([
                 	'textures/skybox/dust_ft.jpg',
                 	'textures/skybox/dust_bk.jpg',
@@ -201,16 +149,11 @@
                     'textures/skybox/dust_lf.jpg'
                 ]);
                 scene.background = texture;
-<<<<<<< HEAD
                 
                 var tiles = ["tile_tree", "tile_treeDouble", "tile_treeQuad"];
                 
                 var tile = "tile";
                 mtlLoader.load("textures/tiles/" + tile + ".mtl", function(materials) {
-=======
-
-            }
->>>>>>> master
 
                     materials.preload();
                     const objLoader = new THREE.OBJLoader();
@@ -306,9 +249,8 @@
                 	            map: new THREE.TextureLoader().load("textures/crate/crate1_diffuse.png"),
                 	            bumpMap: new THREE.TextureLoader().load("textures/crate/crate1_bump.png"),
                 	        })
-
+                    	    
                     	    crate = new THREE.Mesh(BoxGeometry, BoxMaterials);
-<<<<<<< HEAD
                   			
                     		
                             crate.castShadow = true;
@@ -316,33 +258,14 @@
                             scene.add(crate);
                             
                             worldObjects[command.parameters.uuid] = crate;
-=======
-
-                    		var group = new THREE.Group();
-
-                            crate.castShadow = true;
-                            crate.receiveShadow = true;
-                            group.add(crate);
-                            scene.add(group);
-
-                            worldObjects[command.parameters.uuid] = group;
->>>>>>> master
                     	}
-
+                    	
                         if (command.parameters.type == "robotpath") {
                             var geometry = new THREE.PlaneGeometry(1, 1);
                             var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/concrete.jpeg"), side: THREE.DoubleSide });
                             var plane = new THREE.Mesh(geometry, material);
 
-<<<<<<< HEAD
                             plane.rotation.x = Math.PI / 2
-=======
-                            plane.rotation.x = Math.PI / 2.0;
-                            plane.position.x = 0.5;
-                            plane.position.z = 0.5;
-                            plane.position.y = 0.01;
-
->>>>>>> master
                             var group = new THREE.Group();
                             group.add(plane);
 
@@ -350,62 +273,6 @@
                             worldObjects[command.parameters.uuid] = group;
                         }
 
-<<<<<<< HEAD
-=======
-                    }
-                    if (command.parameters.type == "truck") {
-                        mtlLoader.load("textures/truck/delivery.mtl", function(materials) {
-                            materials.preload();
-                            const objLoader = new THREE.OBJLoader();
-                            objLoader.setMaterials(materials);
-                            objLoader.load("textures/truck/delivery.obj", function(truck){
-
-                                truck.traverse(function(node) {
-                                    if (node instanceof THREE.Mesh) {
-                                        node.castShadow = true;
-                                        node.receiveShadow = true;
-                                    }
-                                })
-                                scene.add(truck);
-                                truck.rotation.y = Math.PI / 2;
-                                truck.scale.set(5, 5, 5);
-
-                                truck.position.x = command.parameters.x;
-                                truck.position.y = command.parameters.y;
-                                truck.position.z = command.parameters.z;
-
-                            });
-                        });
-                    }
-                    var tiles = ["tile_tree", "tile_treeDouble", "tile_treeQuad"];
-
-                    if (command.parameters.type == "tile") {
-                        //var tile = tiles[Math.floor(Math.random() * tiles.length)];
-                        var tile = "tile";
-                        //window.alert(tile);
-                        mtlLoader.load("textures/tiles/" + tile + ".mtl", function(materials) {
-
-                            materials.preload();
-                            const objLoader = new THREE.OBJLoader();
-                            objLoader.setMaterials(materials);
-                            objLoader.load("textures/tiles/" + tile + ".obj", function(mesh){
-
-                                mesh.traverse(function(node) {
-                                    if (node instanceof THREE.Mesh) {
-                                        node.castShadow = true;
-                                        node.receiveShadow = true;
-                                    }
-                                })
-
-                                scene.add(mesh);
-                                mesh.position.x = command.parameters.x;
-                                mesh.position.y = command.parameters.y;
-                                mesh.position.z = command.parameters.z;
-
-                            });
-                        });
-                    }
->>>>>>> master
 
                     
                     if (command.parameters.type == "truck") {
@@ -456,11 +323,7 @@
     <script src="OrbitControls.js"></script>
     <script src="OBJLoader.js"></script>
     <script src="MTLLoader.js"></script>
-<<<<<<< HEAD
         
-=======
-
->>>>>>> master
 </body>
 
 </html>
