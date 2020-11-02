@@ -5,6 +5,8 @@ import java.util.UUID;
 class Box implements Object3D, Updatable {
 	private UUID uuid;
 
+	private boolean toTruck;
+	
     private double x = 0;
     private double y = 0;
     private double z = 0;
@@ -20,6 +22,7 @@ class Box implements Object3D, Updatable {
         this.x = x;
         this.z = z;
         this.y = y;
+        this.toTruck = true;
     }
     
     public boolean getTaken() {
@@ -28,6 +31,14 @@ class Box implements Object3D, Updatable {
     
     public void giveTaken(boolean taken) {
     	this.taken = taken;
+    }
+    
+    public boolean getToTruck() {
+    	return toTruck;	
+    }
+    
+    public void setToTruck(boolean toTruck) {
+    	this.toTruck = toTruck;
     }
     
     @Override

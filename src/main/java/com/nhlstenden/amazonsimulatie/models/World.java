@@ -19,8 +19,15 @@ public class World implements Model {
      * Deze objecten moeten uiteindelijk ook in de lijst passen (overerving). Daarom is dit
      * een lijst van Object3D onderdelen. Deze kunnen in principe alles zijn. (Robots, vrachrtwagens, etc)
      */
-    private List<Object3D> worldObjects;
 
+	
+    private List<Object3D> worldObjects;
+    private List<Dock> docks;
+    private List<Robot> robots;
+    private List<Box> boxes;
+    private List<RobotPath> robotpaths;
+    private Truck truck;
+    
     /*
      * Dit onderdeel is nodig om veranderingen in het model te kunnen doorgeven aan de controller.
      * Het systeem werkt al as-is, dus dit hoeft niet aangepast te worden.
@@ -33,30 +40,46 @@ public class World implements Model {
      */
     public World() {
 
+    	this.docks = new ArrayList<Dock>();
+    	this.robots = new ArrayList<Robot>();
+    	this.boxes = new ArrayList<Box>();
+    	this.robotpaths = new ArrayList<RobotPath>();
+    	
+    	
     	int[][] layout = new Layout().Getlayout();
+    	
     	
         this.worldObjects = new ArrayList<>();
         
-        this.worldObjects.add(new Truck(100, 0, 15));
-
-        for (int i = 0; i < layout[0].length; i++) { 
-            for (int j = 0; j < layout[1].length; j++) {
-            	if (layout[i][j] == 1) {
-            		this.worldObjects.add(new RobotPath(i,j,0.1));
-            	}
-            	if (layout[i][j] == 2) {
-                	this.worldObjects.add(new Robot(i,j,0.15));
-                	this.worldObjects.add(new RobotPath(i,j,0.1));
-            	}
-            	if (layout[i][j] == 3) {
-                	this.worldObjects.add(new Box(i,j,0.5));
-            	}
-            	if (layout[i][j] == 4) {
-                	this.worldObjects.add(new Dock(i,j,0.1));
-            	}
+       
+        this.truck = new Truck(100, 0, 15);
+        
+        
+        for (int i = 0; i < layout[0].length; i++) {
+            for (int j = 0; j < layout[1].length; j++)  {
+            	if (layout[i][j] == 1) 
+            		this.robotpaths.add(new RobotPath(i,j,0.1));
             	
+            	if (layout[i][j] == 2) {
+                	this.robots.add(new Robot(i,j,0.15));
+                	this.robotpaths.add(new RobotPath(i,j,0.1));
+            	}
+
+            	if (layout[i][j] == 3) 
+                	this.boxes.add(new Box(i,j,0.5));
+            	
+            	if (layout[i][j] == 4) 
+                	this.docks.add(new Dock(i,j,0.1));	
             }
-        } 
+        }
+        
+        this.worldObjects.addAll(this.robots);
+        this.worldObjects.addAll(this.robotpaths);
+        this.worldObjects.addAll(this.docks);
+        this.worldObjects.addAll(this.boxes);
+        this.worldObjects.add(this.truck);
+        
+        
     }
 
     /*
@@ -70,6 +93,17 @@ public class World implements Model {
      */
     @Override
     public void update() {
+		if (this.truck.standingStill() == true && this.truck.getSpawnedBoxes() == false) {
+    			spawnBoxes(this.truck);
+		}
+		
+//		for (Object3D box : this.boxes) {
+//			if (((Box) box).getToTruck() == true) {
+//				this.boxes.remove(box);
+//				this.worldObjects.remove(box);
+//			}
+//		}
+		
         for (Object3D object : this.worldObjects) {
             if(object instanceof Updatable) {
                 if (((Updatable)object).update()) {
@@ -79,6 +113,15 @@ public class World implements Model {
         }
     }
 
+    public void spawnBoxes(Object3D objectTruck) {
+    	for (Object3D objectDock : this.docks) {
+    				this.worldObjects.add(new Box(objectDock.getX(), objectDock.getZ(), 0.5));
+    			}
+    	this.truck.setSpawnedBoxes(true);
+		}
+	
+	
+    
     /*
      * Standaardfunctionaliteit. Hoeft niet gewijzigd te worden.
      */

@@ -2,7 +2,7 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
 
-public class Dock implements Object3D, Updatable{
+public class Tile implements Object3D {
 	
     private UUID uuid;
     
@@ -14,18 +14,13 @@ public class Dock implements Object3D, Updatable{
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Dock(double x, double z, double y) {
+    public Tile(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.y = y;
     }
-    
-    @Override 
-    public boolean update() {
-		return true;
-    
-    }
+
     @Override
     public String getUUID() {
         return this.uuid.toString();
@@ -34,7 +29,7 @@ public class Dock implements Object3D, Updatable{
     @Override
     public String getType() {
 
-        return Dock.class.getSimpleName().toLowerCase();
+        return Tile.class.getSimpleName().toLowerCase();
     }
     
     @Override
