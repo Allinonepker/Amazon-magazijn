@@ -29,11 +29,11 @@ public class World implements Model, PropertyChangeListener {
     private List<Box> boxes;
     private List<Storageplace> storageplaces;
     private List<Dock> dockplaces;
-    private List<Robottask> robottasks;
+    private List<RobotTask> robottasks;
 
 
     private Shortestpath shortestpath = new Shortestpath();
-    private Animator animator = new Animator(5);
+    private Animator animator = new Animator(2);
 
     /*
      * Dit onderdeel is nodig om veranderingen in het model te kunnen doorgeven aan de controller.
@@ -64,35 +64,52 @@ public class World implements Model, PropertyChangeListener {
             	if (layout[i][j] == 1) {
             		this.worldObjects.add(new RobotPath(i,j,0.1));
             	}
-            	if (layout[i][j] == 2) {
-                    Robot robot = new Robot(i,j,0.15);
-                    robots.add(robot);
-                	this.worldObjects.add(robot);
-                	this.worldObjects.add(new RobotPath(i,j,0.1));
-            	}
+            	
             	if (layout[i][j] == 3) {
+                    Storageplace storageplace = new Storageplace(i, j, 0.1);
                     Box box = new Box(i, j, 0.5);
+                    storageplace.FillPlace(box);
                     boxes.add(box);
+                    storageplaces.add(storageplace);
                 	this.worldObjects.add(box);
                 }
                 if (layout[i][j] == 4) {
-
+                    Dock dock = new Dock(i, j, 0.1);
+                    dockplaces.add(dock);
                 }
+                if (layout[i][j] == 2) {
+                    Robot robot = new Robot(i,j,0.15);
+                    robots.add(robot);
+                	this.worldObjects.add(robot);
+                    this.worldObjects.add(new RobotPath(i,j,0.1)); 
+                    robot.addPropertyChangeListener(this);
+                   
+            	}
             }
         } 
 
-       // robottasks.add(new Robottask(boxes.get(0),false));
+       robottasks.add(new RobotTask(boxes.get(0),false));
 
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName() == "Robot"){
+
+            int i = (int) evt.getNewValue();
             Robot robot = (Robot)evt.getSource();
-            if(robottasks.size() != 0)
-            StartNewTask(robot);
-            else
-            robot.ChangeState(0);
+
+            if(i == 2){
+
+                if(robottasks.size() != 0)
+                StartNewTask(robot);
+                else
+                robot.ChangeState(0);
+            }
+            if(i == 1){
+                Pickupbox(robot);
+            }
+
         }
 
         if (evt.getPropertyName() == "Truck"){
@@ -103,38 +120,57 @@ public class World implements Model, PropertyChangeListener {
 
     public void StartNewTask(Robot robot){
 
-        Robottask task = robottasks.remove(0);
+        RobotTask task = robottasks.remove(0);
         Position robotposition = robot.getPosition();
 
         Box box = task.Getbox();
 
         double boxX = box.getX();
-        double boxZ = box.getY();        
+        double boxZ = box.getZ();        
         
         List<int[]> path = shortestpath.getShortestpath(layout, (int)robotposition.getX(), (int)robotposition.getZ(), (int)boxX, (int)boxZ);
         List<Position> newpositions = animator.GetAnimation(path, robotposition);
 
         robot.ChangeState(1);
+        robot.AddTask(task);
         robot.FeedQueue(newpositions);
         
+    }
+
         
+    public void Pickupbox(Robot robot){ 
         
-        
-        
-        
+        RobotTask task = robot.GetTask();
+        Box box = task.Getbox();
+        Boxplace currentplace = GetPlacewithbox(box);
+        Position robotposition = robot.getPosition();
+
+        currentplace.EmptyPlace();
+        robot.PickupBox(box);
         
         Boxplace storagelocation;
 
-        if (task.IsNewBox()){
+        if (task.IsNewBox())
+        {
             storagelocation = GetEmptyplace(0);
-
         } 
         else {
             storagelocation = GetEmptyplace(1);
         }
-        if (storagelocation != null){
-
+        if (storagelocation == null){
+            return;
         }
+        storagelocation.FillPlace(box);
+
+        List<int[]> path = shortestpath.getShortestpath(layout, (int)robotposition.getX(), (int)robotposition.getZ(), (int)storagelocation.getX(), (int)storagelocation.getZ());
+        List<Position> newpositions = animator.GetAnimation(path, robotposition);
+
+        robot.ChangeState(2);
+        robot.FeedQueue(newpositions);
+        box.FeedQueue(newpositions);
+    }
+
+    public void Putdownbox(Robot robot){
 
     }
 
@@ -167,6 +203,21 @@ public class World implements Model, PropertyChangeListener {
         int randomplace = random.nextInt(emptyplaces.size());
 
         return emptyplaces.get(randomplace);
+    }
+
+    public Boxplace GetPlacewithbox(Box box){
+        Boxplace place = null;
+        for(Boxplace i : storageplaces ){
+            if (i.GetBox() == box){
+                place = i;
+            }
+        }
+        for(Boxplace i : dockplaces ){
+            if (i.GetBox() == box){
+                place = i;
+            }
+        }
+        return place;
     }
 
         

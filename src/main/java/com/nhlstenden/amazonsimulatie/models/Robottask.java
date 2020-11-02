@@ -1,11 +1,11 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-public class Robottask {
+public class RobotTask {
     
     private Box box;
     private boolean newbox;
 
-    Robottask (Box box, boolean newbox){
+    RobotTask(Box box, boolean newbox){
 
         this.box = box;
         this.newbox = newbox;

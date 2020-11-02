@@ -15,6 +15,7 @@ public class Dock implements Object3D , Boxplace{
     private double rotationZ = 0;
     
     private boolean empty = true;
+    private Box box;
 
     public Dock(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
@@ -29,13 +30,20 @@ public class Dock implements Object3D , Boxplace{
     }
 
     @Override
-    public void FillPlace(){
+    public void FillPlace(Box box){
         this.empty = false;
+        this.box = box;
     }
 
     @Override
     public void EmptyPlace(){
         this.empty = true;
+        this.box = null;
+    }
+
+    @Override
+    public Box GetBox(){
+        return box;
     }
 
 

@@ -10,20 +10,23 @@ class Shortestpath {
 	
 	public List<int[]> getShortestpath(int[][] layout, int startX, int startZ, int endX, int endZ){
 		
-		List<Node> nodelist = getnodes(layout);
-		List<Node> unvisited = nodelist;
+		List<Node> unvisited = getnodes(layout);
 		List<Node> visited = new ArrayList<Node>();
 		List<int[]> shortestpath = new ArrayList<int[]>();
 
 		
 		Node currentnode = getNode(startX, startZ, unvisited);
-		if(currentnode == null)
-		currentnode = new Node(startX, startZ);
+		if(currentnode == null){
+			currentnode = new Node(startX, startZ);
+			unvisited.add(currentnode);
+		}
 
-		Node endnode = getNode(endX, endZ, nodelist);
-		if(endnode == null)
-		endnode = new Node(endX, endZ);
-		
+		Node endnode = getNode(endX, endZ, unvisited);
+		if(endnode == null){
+			endnode = new Node(endX, endZ);
+			unvisited.add(endnode);
+		}
+
 		currentnode.Setshortestdistance(0);
 		
 		
@@ -67,6 +70,8 @@ class Shortestpath {
 		}
 		return shortestpath;
 	}
+
+	
 	
 	
 	private Node getNode(int X, int Z, List<Node> nodelist) {
@@ -104,14 +109,16 @@ class Shortestpath {
 			
 		for(int i = 0; i < 30; i++) {
 			for(int j = 0; j < 30; j++) {
-				if(layout[i][j] == 1) {
+				if(layout[i][j] == 1 || layout[i][j] == 2) {
 					Node newnode = new Node((i),j);
 					nodes.add(newnode);
 				}
 			}
 		}
 		return nodes;
+
 	}
+
 	private class Node {
 	
 		private int X;
