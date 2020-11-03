@@ -2,7 +2,7 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
 
-public class Dock implements Object3D , Boxplace{
+public class Storageplace implements Object3D, Boxplace {
 	
     private UUID uuid;
     
@@ -17,7 +17,7 @@ public class Dock implements Object3D , Boxplace{
     private boolean empty = true;
     private Box box;
 
-    public Dock(double x, double z, double y) {
+    public Storageplace(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
@@ -46,7 +46,6 @@ public class Dock implements Object3D , Boxplace{
         return box;
     }
 
-
     
 
     @Override
@@ -57,7 +56,7 @@ public class Dock implements Object3D , Boxplace{
     @Override
     public String getType() {
 
-        return Dock.class.getSimpleName().toLowerCase();
+        return Storageplace.class.getSimpleName().toLowerCase();
     }
     
     @Override
