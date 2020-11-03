@@ -1,11 +1,21 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.UUID;
 
 class Box implements Object3D, Updatable {
 	private UUID uuid;
 
 	private boolean toTruck;
+	
+	private PropertyChangeSupport support;
+	
+	StateBox stateBox;
+	
+	enum StateBox {
+		NEW, OLD
+	}
 	
     private double x = 0;
     private double y = 0;
@@ -23,10 +33,16 @@ class Box implements Object3D, Updatable {
         this.z = z;
         this.y = y;
         this.toTruck = true;
+        stateBox = StateBox.NEW;
+        support = new PropertyChangeSupport(this);
     }
     
     public boolean getTaken() {
     	return taken;
+    }
+    
+    public void addPropertyChangeListener(PropertyChangeListener pcl){
+        support.addPropertyChangeListener(pcl);
     }
     
     public void giveTaken(boolean taken) {
@@ -41,17 +57,19 @@ class Box implements Object3D, Updatable {
     	this.toTruck = toTruck;
     }
     
+    public void setStateBox(StateBox state) {
+		this.stateBox = state;
+		support.firePropertyChange("Box", StateBox.NEW, StateBox.OLD);
+	}
+    
+    public StateBox getStateBox() {
+    	return this.stateBox;
+    }
+    
     @Override
     public boolean update() {
-    	
-//    	if (this.x != this.startX && this.z != this.startZ) {
-//        	this.x += (this.startX - this.x) / 20;
-//        	this.z += (this.startZ - this.z) / 20;
-//        	if (Math.abs(this.startX - this.x) < 2 || Math.abs(this.startZ - this.y) < 2) {
-//        		this.x += (this.startX - this.x);
-//        		this.z += (this.startZ - this.z);
-//        	}
-        	return true;
+    	this.rotationX +=1;
+    	return true;
     }
 
     @Override

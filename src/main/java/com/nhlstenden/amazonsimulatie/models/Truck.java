@@ -1,5 +1,8 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.UUID;
 
 /*
@@ -12,6 +15,8 @@ class Truck implements Object3D, Updatable {
 
     private boolean goingBack = false;
     private boolean goingToDock = true;
+
+    private PropertyChangeSupport support;
     
     private boolean spawnedBoxes = false;
     
@@ -28,6 +33,7 @@ class Truck implements Object3D, Updatable {
         this.x = x;
         this.z = z;
         this.y = y;
+        support = new PropertyChangeSupport(this);
     }
     
     /*
@@ -55,9 +61,11 @@ class Truck implements Object3D, Updatable {
     			goingBack();
     			return true;
     		}
-    	
 		return false;
-		
+    }
+    
+    public void addPropertyChangeListener(PropertyChangeListener pcl){
+        support.addPropertyChangeListener(pcl);
     }
 
     public boolean getGoingBack() {
@@ -82,6 +90,11 @@ class Truck implements Object3D, Updatable {
 		}
 		else 
     		goingToDock = false;
+    		support.firePropertyChange("Truck", false, true);
+    }
+    
+    public void setToGoBack() {
+    	this.goingBack = true;
     }
     
     @Override
@@ -143,4 +156,5 @@ class Truck implements Object3D, Updatable {
     public double getRotationZ() {
         return this.rotationZ;
     }
+
 }

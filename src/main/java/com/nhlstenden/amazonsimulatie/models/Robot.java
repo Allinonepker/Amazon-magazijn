@@ -1,5 +1,7 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +16,8 @@ class Robot implements Object3D, Updatable {
     private UUID uuid;
 
     private List<Position> actionlist = new ArrayList<Position>();
+
+    private PropertyChangeSupport support;
     
     private double x = 0;
     private double y = 0;
@@ -23,11 +27,20 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
+    private int state = 0;
+    
+    private Box box;
+
     public Robot(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.y = y;
+        support = new PropertyChangeSupport(this);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl){
+        support.addPropertyChangeListener(pcl);
     }
 
     /*
@@ -47,6 +60,7 @@ class Robot implements Object3D, Updatable {
     public boolean update() {
         if(!actionlist.isEmpty()){
             Position action = actionlist.remove(0);
+
             this.x = action.getX();
             this.z = action.getZ();
             this.y = action.getY();
@@ -54,19 +68,35 @@ class Robot implements Object3D, Updatable {
             this.rotationX = action.getrotationX();
             this.rotationZ = action.getrotationZ();
             this.rotationY = action.getrotationY();
+            
+            if(box != null){
+
+            }
+            
             return true;
         }
-            
+        else
+        {
+            if (this.state == 1)
+            	support.firePropertyChange("Robot", false, true);
+            if (this.state == 2)
+            	support.firePropertyChange("Robot", false, true);
+        }
         return false;
     }
-
+    
+    //Deze methode geeft terug een Positie object get o.a. de huidige coördinaten van het object
     public Position getPosition(){
         Position position = new Position(this.x, this.z, this.y, this.rotationX, this.rotationZ, this.rotationY);
         return position;
     }
 
+    //Deze methode pakt een doos
+    public void PickupBox(Box box){
+        this.box = box;
+    }
 
-
+    //Deze methode 
     public void FeedQueue(List<Position> newactions){
         for(Position i : newactions)
         this.actionlist.add(i);
@@ -75,6 +105,10 @@ class Robot implements Object3D, Updatable {
     @Override
     public String getUUID() {
         return this.uuid.toString();
+    }
+
+    public void ChangeState(int i){
+        this.state = i; // 0 is sleep, 1 is going to storageplace, 2 is going to dock, evt 3 is going to sleepplace
     }
 
     @Override
