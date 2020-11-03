@@ -5,8 +5,15 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
+import javax.management.InstanceNotFoundException;
+
+import com.fasterxml.jackson.databind.ser.impl.UnwrappingBeanPropertyWriter;
+import com.nhlstenden.amazonsimulatie.models.Box.StateBox;
+
+import ch.qos.logback.core.rolling.helper.ArchiveRemover;
 
 /*
  * Deze class is een versie van het model van de simulatie. In dit geval is het
@@ -23,18 +30,21 @@ public class World implements Model, PropertyChangeListener {
      * een lijst van Object3D onderdelen. Deze kunnen in principe alles zijn. (Robots, vrachrtwagens, etc)
      */
     int[][] layout = new Layout().Getlayout();
-
-    private List<Robot> robots;
+	
     private List<Object3D> worldObjects;
+    private List<Dock> docks;
+    private List<Robot> robots;
     private List<Box> boxes;
-    private List<Storageplace> storageplaces;
-    private List<Dock> dockplaces;
+    private List<RobotPath> robotpaths;
+    private Truck truck;
     private List<RobotTask> robottasks;
-
-
+    private List<Storageplace> storageplaces;
+    
+    private int amountBoxesToBePickedUp = 0;
+    
     private Shortestpath shortestpath = new Shortestpath();
-    private Animator animator = new Animator(10);
-
+    private Animator animator = new Animator(5);
+    
     /*
      * Dit onderdeel is nodig om veranderingen in het model te kunnen doorgeven aan de controller.
      * Het systeem werkt al as-is, dus dit hoeft niet aangepast te worden.
@@ -47,28 +57,45 @@ public class World implements Model, PropertyChangeListener {
      */
     public World() {
 
-        this.robots = new ArrayList<>();
-        this.boxes = new ArrayList<>();
-        this.storageplaces = new ArrayList<>();
-        this.dockplaces = new ArrayList<>();
+    	this.docks = new ArrayList<Dock>();
+    	this.robots = new ArrayList<Robot>();
+    	this.boxes = new ArrayList<Box>();
+    	this.robotpaths = new ArrayList<>();
         this.robottasks = new ArrayList<>();
+        this.storageplaces = new ArrayList<>();
+    	
         this.worldObjects = new ArrayList<>();
+        this.truck = new Truck(100, 0, 15);
         
-        this.worldObjects.add(new Truck(37, 0, 15));
+        this.truck.addPropertyChangeListener(e -> {
+        	System.out.println("test truck");
+        	if ((boolean) e.getNewValue() == true && truck.getSpawnedBoxes() == false && truck.standingStill() == true) {
+        		spawnBoxes(truck);
+        	}	
+        });
 
         for (int i = 0; i < layout[0].length; i++) { 
             for (int j = 0; j < layout[1].length; j++) {
-            	if (layout[i][j] == 0) {
-            		this.worldObjects.add(new Tile(i,j,0));
-                }
                 
             	if (layout[i][j] == 1) {
-            		this.worldObjects.add(new RobotPath(i,j,0.1));
+            		this.robotpaths.add(new RobotPath(i,j,0.1));
+            	}
+                
+                if (layout[i][j] == 2) {
+                    Robot robot = new Robot(i,j,0.15);
+                    this.robots.add(robot);
+                    this.robotpaths.add(new RobotPath(i,j,0.1));
+                    robot.addPropertyChangeListener(this);
             	}
                 
                 if (layout[i][j] == 3) {
                     Storageplace storageplace = new Storageplace(i, j, 0.1);
                     storageplaces.add(storageplace);
+                }
+                
+                if (layout[i][j] == 4) {
+                    Dock dock = new Dock(i, j, 0.1);
+                    docks.add(dock);
                 }
 
             	if (layout[i][j] == 5) {
@@ -77,28 +104,20 @@ public class World implements Model, PropertyChangeListener {
                     storageplace.FillPlace(box);
                     boxes.add(box);
                     storageplaces.add(storageplace);
-                	this.worldObjects.add(box);
-                }
-
-                if (layout[i][j] == 4) {
-                    Dock dock = new Dock(i, j, 0.1);
-                    dockplaces.add(dock);
-                }
-
-                if (layout[i][j] == 2) {
-                    Robot robot = new Robot(i,j,0.15);
-                    robots.add(robot);
-                	this.worldObjects.add(robot);
-                    this.worldObjects.add(new RobotPath(i,j,0.1)); 
-                    robot.addPropertyChangeListener(this);
-            	}
+                	box.addPropertyChangeListener(e -> {
+            			if (this.amountBoxesToBePickedUp > 4 && box.getStateBox() == StateBox.OLD) {
+                			removeBox(box);
+                			this.amountBoxesToBePickedUp -= 1;
+                        }	
+                    });
+                }       		
             }
-        } 
-
-       robottasks.add(new RobotTask(boxes.get(0),false));
-       robottasks.add(new RobotTask(boxes.get(1),false));
-       robottasks.add(new RobotTask(boxes.get(2),false));
-       robottasks.add(new RobotTask(boxes.get(3),false));
+        }
+        this.worldObjects.addAll(this.robots);
+        this.worldObjects.addAll(this.robotpaths);
+        this.worldObjects.addAll(this.docks);
+        this.worldObjects.addAll(this.boxes);
+        this.worldObjects.add(this.truck);  
     }
 
     @Override
@@ -208,7 +227,7 @@ public class World implements Model, PropertyChangeListener {
         }
 
         if (k == 1){
-            for(Boxplace i : dockplaces){
+            for(Boxplace i : docks){
                 if(i.IsEmpty())
                 emptyplaces.add(i);
             }
@@ -231,7 +250,7 @@ public class World implements Model, PropertyChangeListener {
                 place = i;
             }
         }
-        for(Boxplace i : dockplaces ){
+        for(Boxplace i : docks ){
             if (i.GetBox() == box){
                 place = i;
             }
@@ -244,6 +263,22 @@ public class World implements Model, PropertyChangeListener {
 
     
 
+    private void pickingUp() {
+    	ListIterator<Box> iterator = this.boxes.listIterator();
+    	while (iterator.hasNext()) {
+			if (iterator.next().getStateBox() == StateBox.OLD) {
+				iterator.remove();
+				this.worldObjects.remove(iterator);
+			}
+		}
+		this.truck.setToGoBack();
+	}
+    
+    public void removeBox(Box box) {
+    	System.out.println("Box removed");
+    	this.worldObjects.remove(box);
+    	this.boxes.remove(box);
+    }
     /*
      * Deze methode wordt gebruikt om de wereld te updaten. Wanneer deze methode wordt aangeroepen,
      * wordt op elk object in de wereld de methode update aangeroepen. Wanneer deze true teruggeeft
@@ -255,7 +290,9 @@ public class World implements Model, PropertyChangeListener {
      */
     @Override
     public void update() {
-        try {
+    	ListIterator iterator = this.worldObjects.listIterator();
+    	try {
+    		System.out.println(this.amountBoxesToBePickedUp);
             for (Object3D object : this.worldObjects) {
                 if(object instanceof Updatable) {
                     if (((Updatable)object).update()) {
@@ -263,12 +300,35 @@ public class World implements Model, PropertyChangeListener {
                     }
                 }
             }
-        }
-        catch (Exception e){
-            System.out.println("jooee hoii");
-        }
+    	}
+    	catch (Exception e) {
+			System.out.println("SAME FUCKING ERROR");
+		}
+
     }
 
+    
+
+    
+    public void spawnBoxes(Object3D objectTruck) {
+    	System.out.println("Spawning boxes");
+    	for (Object3D objectDock : this.docks) {
+    				Box box = new Box(objectDock.getX(), objectDock.getZ(), 0.5);
+    				this.boxes.add(box);
+    				this.worldObjects.add(box);
+            		box.addPropertyChangeListener(e -> {
+            			if (e.getNewValue() == StateBox.OLD)
+            				this.amountBoxesToBePickedUp += 1;
+            			if (this.amountBoxesToBePickedUp > 4 && box.getStateBox() == StateBox.OLD) {
+                			removeBox(box);
+                			this.amountBoxesToBePickedUp -=1;
+            			}
+            		});
+//    				box.setStateBox(StateBox.OLD);
+    			}
+    	this.truck.setSpawnedBoxes(true);
+		}
+    
     /*
      * Standaardfunctionaliteit. Hoeft niet gewijzigd te worden.
      */
@@ -277,6 +337,7 @@ public class World implements Model, PropertyChangeListener {
         pcs.addPropertyChangeListener(pcl);
     }
 
+    
     /*
      * Deze methode geeft een lijst terug van alle objecten in de wereld. De lijst is echter wel
      * van ProxyObject3D objecten, voor de veiligheid. Zo kan de informatie wel worden gedeeld, maar

@@ -26,6 +26,7 @@ public class SimulationController extends Controller {
      * 100 miliseconden rust, en daarna gaat de loop verder. Dit betekent dat ongeveer 10 keer per seconden
      * de wereld wordt geupdate. Dit is dus in feite 10 frames per seconde.
      */
+    
     @Override
     public void run() {
         while (true) {

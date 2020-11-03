@@ -1,178 +1,219 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="com.nhlstenden.amazonsimulatie.controllers.Controller" project="AmazonSimulatie" 
-    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/controllers/Controller.java" binary="false" 
+  <class id="1" language="java" name="com.nhlstenden.amazonsimulatie.models.Node" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Node.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="243" width="194" x="501" y="13"/>    
+    <position height="297" width="181" x="210" y="-109"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="com.nhlstenden.amazonsimulatie.controllers.SimulationController" 
-    project="AmazonSimulatie" 
-    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/controllers/SimulationController.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="135" width="240" x="455" y="422"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="3" language="java" name="com.nhlstenden.amazonsimulatie.models.Robot" project="AmazonSimulatie" 
-    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Robot.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="369" width="181" x="1013" y="13"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="4" language="java" name="com.nhlstenden.amazonsimulatie.base.Command" project="AmazonSimulatie" 
-    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/base/Command.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="81" width="171" x="966" y="-162"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="5" language="java" name="com.nhlstenden.amazonsimulatie.base.App" project="AmazonSimulatie" 
-    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/base/App.java" binary="false" 
-    corner="BOTTOM_RIGHT">    
-    <position height="135" width="324" x="324" y="-162"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="6" language="java" name="com.nhlstenden.amazonsimulatie.base.App.DefaultWebSocketHandler" 
-    project="AmazonSimulatie" file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/base/App.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
-    <position height="135" width="314" x="147" y="13"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="7" language="java" name="com.nhlstenden.amazonsimulatie.models.Model" project="AmazonSimulatie" 
+  <interface id="2" language="java" name="com.nhlstenden.amazonsimulatie.models.Model" project="AmazonSimulatie" 
     file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Model.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="135" width="238" x="735" y="422"/>    
+    <position height="135" width="238" x="1895" y="444"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="8" language="java" name="com.nhlstenden.amazonsimulatie.models.Object3D" project="AmazonSimulatie" 
+  <interface id="3" language="java" name="com.nhlstenden.amazonsimulatie.models.Object3D" project="AmazonSimulatie" 
     file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Object3D.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="207" width="181" x="1234" y="422"/>    
+    <position height="207" width="181" x="1674" y="444"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="9" language="java" name="com.nhlstenden.amazonsimulatie.models.Updatable" project="AmazonSimulatie" 
+  <interface id="4" language="java" name="com.nhlstenden.amazonsimulatie.models.Updatable" project="AmazonSimulatie" 
     file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Updatable.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="81" width="181" x="1013" y="422"/>    
+    <position height="81" width="181" x="2394" y="444"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="10" language="java" name="com.nhlstenden.amazonsimulatie.models.ProxyObject3D" project="AmazonSimulatie" 
+  <class id="5" language="java" name="com.nhlstenden.amazonsimulatie.models.ProxyObject3D" project="AmazonSimulatie" 
     file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/ProxyObject3D.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="225" width="181" x="1234" y="13"/>    
+    <position height="225" width="181" x="1228" y="-109"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="com.nhlstenden.amazonsimulatie.models.World" project="AmazonSimulatie" 
+  <class id="6" language="java" name="com.nhlstenden.amazonsimulatie.models.RobotPath" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/RobotPath.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="351" width="185" x="1449" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.nhlstenden.amazonsimulatie.models.Dock" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Dock.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="351" width="181" x="1674" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.nhlstenden.amazonsimulatie.models.Robot" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Robot.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="405" width="181" x="2622" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.nhlstenden.amazonsimulatie.models.Box" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Box.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="423" width="181" x="2173" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.nhlstenden.amazonsimulatie.models.Truck" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Truck.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="513" width="188" x="2394" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.nhlstenden.amazonsimulatie.models.Shortestpath" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/ShortestPath.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="153" width="243" x="431" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.nhlstenden.amazonsimulatie.models.Layout" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Layout.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="181" x="714" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="com.nhlstenden.amazonsimulatie.models.Position" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Position.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="297" width="278" x="2615" y="444"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.nhlstenden.amazonsimulatie.models.World" project="AmazonSimulatie" 
     file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/World.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="853" y="95"/>    
+    <position height="171" width="238" x="1895" y="-109"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="12">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="13" name="controller"/>      
-      <multiplicity id="14" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="15">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="8"/>  
+  <class id="15" language="java" name="com.nhlstenden.amazonsimulatie.models.Animator" project="AmazonSimulatie" 
+    file="/AmazonSimulatie/src/main/java/com/nhlstenden/amazonsimulatie/models/Animator.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="253" x="935" y="-109"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <realization id="16">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="4"/>  
   </realization>  
-  <association id="16">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="17" name="model">        
-        <position height="18" width="36" x="726" y="359"/>      
-      </attribute>      
-      <multiplicity id="18" minimum="0" maximum="1"/>    
+  <association id="17">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="18" name="actionlist"/>      
+      <multiplicity id="19" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="19">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <association id="20">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="21" name="worldObjects">        
-        <position height="18" width="73" x="931" y="219"/>      
-      </attribute>      
-      <multiplicity id="22" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="23">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="7"/>  
-  </realization>  
-  <generalization id="24">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
-  <realization id="25">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="9"/>  
-  </realization>  
-  <association id="26">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="27" name="object">        
-        <position height="18" width="37" x="1262" y="338"/>      
-      </attribute>      
-      <multiplicity id="28" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="29">    
+  <realization id="20">    
     <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="8"/>  
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="21">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <realization id="22">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <realization id="23">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="24">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <realization id="25">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="26">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <realization id="27">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
+  <association id="28">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="29" name="object"/>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="32" name="worldObjects"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="34">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="3"/>  
   </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
