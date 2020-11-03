@@ -1,6 +1,7 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +9,16 @@ import java.util.UUID;
 class Box implements Object3D, Updatable {
 	private UUID uuid;
 
+	private boolean toTruck;
+	
+	private PropertyChangeSupport support;
+	
+	StateBox stateBox;
+	
+	enum StateBox {
+		NEW, OLD
+	}
+	
     private double x = 0;
     private double y = 0;
     private double z = 0;
@@ -27,10 +38,17 @@ class Box implements Object3D, Updatable {
         this.x = x;
         this.z = z;
         this.y = y;
+        this.toTruck = true;
+        stateBox = StateBox.NEW;
+        support = new PropertyChangeSupport(this);
     }
     
     public boolean getTaken() {
     	return taken;
+    }
+    
+    public void addPropertyChangeListener(PropertyChangeListener pcl){
+        support.addPropertyChangeListener(pcl);
     }
     
     public void giveTaken(boolean taken) {
@@ -39,6 +57,23 @@ class Box implements Object3D, Updatable {
 
 
 
+    
+    public boolean getToTruck() {
+    	return toTruck;	
+    }
+    
+    public void setToTruck(boolean toTruck) {
+    	this.toTruck = toTruck;
+    }
+    
+    public void setStateBox(StateBox state) {
+		this.stateBox = state;
+		support.firePropertyChange("Box", StateBox.NEW, StateBox.OLD);
+	}
+    
+    public StateBox getStateBox() {
+    	return this.stateBox;
+    }
     
     @Override
     public boolean update() {
