@@ -26,9 +26,8 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    private int state = 2;
+    private int state = 1;
     private RobotTask task;
-    private Box box;
 
     public Robot(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
@@ -72,29 +71,29 @@ class Robot implements Object3D, Updatable {
             return true;
 
         } else {
-            if (this.state == 1)
-                support.firePropertyChange("Robot", 0, 1);
-            if (this.state == 2)
-                support.firePropertyChange("Robot", 0, 2);
+            if(state == 0)
+            return false;
+
+            UpdateState(state + 1);
+            return true;
         }
-        return false;
     }
+    public void UpdateState(int newstate){
+        int oldstate = state;
+        state = newstate;
+        support.firePropertyChange("Robot", oldstate, newstate);
+    }
+
+
+
+
+
 
     public Position getPosition(){
         Position position = new Position(this.x, this.z, this.y, this.rotationX, this.rotationZ, this.rotationY);
         return position;
     }
-
-
-    public void PickupBox(Box box){
-        this.box = box;
-    }
-
-    public void DropBox(){
-        this.box = null;
-    }
-
-    public void AddTask(RobotTask task){
+    public void SetTask(RobotTask task){
         this.task = task;
     }
 
@@ -102,7 +101,7 @@ class Robot implements Object3D, Updatable {
         return this.task;
     }
 
-    public void FeedQueue(List<Position> newactions){
+    public void FeedPositions(List<Position> newactions){
         for(Position i : newactions)
         this.actionlist.add(i);
     }

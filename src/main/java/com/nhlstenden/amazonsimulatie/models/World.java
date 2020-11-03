@@ -33,7 +33,7 @@ public class World implements Model, PropertyChangeListener {
 
 
     private Shortestpath shortestpath = new Shortestpath();
-    private Animator animator = new Animator(2);
+    private Animator animator = new Animator(10);
 
     /*
      * Dit onderdeel is nodig om veranderingen in het model te kunnen doorgeven aan de controller.
@@ -60,12 +60,18 @@ public class World implements Model, PropertyChangeListener {
             for (int j = 0; j < layout[1].length; j++) {
             	if (layout[i][j] == 0) {
             		this.worldObjects.add(new Tile(i,j,0));
-            	}
+                }
+                
             	if (layout[i][j] == 1) {
             		this.worldObjects.add(new RobotPath(i,j,0.1));
             	}
-            	
-            	if (layout[i][j] == 3) {
+                
+                if (layout[i][j] == 3) {
+                    Storageplace storageplace = new Storageplace(i, j, 0.1);
+                    storageplaces.add(storageplace);
+                }
+
+            	if (layout[i][j] == 5) {
                     Storageplace storageplace = new Storageplace(i, j, 0.1);
                     Box box = new Box(i, j, 0.5);
                     storageplace.FillPlace(box);
@@ -73,23 +79,26 @@ public class World implements Model, PropertyChangeListener {
                     storageplaces.add(storageplace);
                 	this.worldObjects.add(box);
                 }
+
                 if (layout[i][j] == 4) {
                     Dock dock = new Dock(i, j, 0.1);
                     dockplaces.add(dock);
                 }
+
                 if (layout[i][j] == 2) {
                     Robot robot = new Robot(i,j,0.15);
                     robots.add(robot);
                 	this.worldObjects.add(robot);
                     this.worldObjects.add(new RobotPath(i,j,0.1)); 
                     robot.addPropertyChangeListener(this);
-                   
             	}
             }
         } 
 
        robottasks.add(new RobotTask(boxes.get(0),false));
-
+       robottasks.add(new RobotTask(boxes.get(1),false));
+       robottasks.add(new RobotTask(boxes.get(2),false));
+       robottasks.add(new RobotTask(boxes.get(3),false));
     }
 
     @Override
@@ -99,23 +108,27 @@ public class World implements Model, PropertyChangeListener {
             int i = (int) evt.getNewValue();
             Robot robot = (Robot)evt.getSource();
 
-            if(i == 2){
 
-                if(robottasks.size() != 0)
+            if(i == 2){
                 StartNewTask(robot);
-                else
-                robot.ChangeState(0);
             }
-            if(i == 1){
+            if(i == 3){
                 Pickupbox(robot);
             }
-
+            if(i == 4){           
+                Putdownbox(robot);
+            }
+            if(i == 5){
+                if(robottasks.size() != 0)
+                robot.UpdateState(1);
+                else
+                robot.UpdateState(0);
+            }
         }
 
         if (evt.getPropertyName() == "Truck"){
 
         }
-        
     }
 
     public void StartNewTask(Robot robot){
@@ -131,13 +144,10 @@ public class World implements Model, PropertyChangeListener {
         List<int[]> path = shortestpath.getShortestpath(layout, (int)robotposition.getX(), (int)robotposition.getZ(), (int)boxX, (int)boxZ);
         List<Position> newpositions = animator.GetAnimation(path, robotposition);
 
-        robot.ChangeState(1);
-        robot.AddTask(task);
-        robot.FeedQueue(newpositions);
-        
+        robot.SetTask(task);
+        robot.FeedPositions(newpositions);
     }
 
-        
     public void Pickupbox(Robot robot){ 
         
         RobotTask task = robot.GetTask();
@@ -146,7 +156,6 @@ public class World implements Model, PropertyChangeListener {
         Position robotposition = robot.getPosition();
 
         currentplace.EmptyPlace();
-        robot.PickupBox(box);
         
         Boxplace storagelocation;
 
@@ -165,16 +174,26 @@ public class World implements Model, PropertyChangeListener {
         List<int[]> path = shortestpath.getShortestpath(layout, (int)robotposition.getX(), (int)robotposition.getZ(), (int)storagelocation.getX(), (int)storagelocation.getZ());
         List<Position> newpositions = animator.GetAnimation(path, robotposition);
 
-        robot.ChangeState(2);
-        robot.FeedQueue(newpositions);
-        box.FeedQueue(newpositions);
+        robot.FeedPositions(newpositions);
+        box.FeedPositions(newpositions);
     }
 
     public void Putdownbox(Robot robot){
 
+        RobotTask task = robot.GetTask();
+        Box box = task.Getbox();
+
+        Position endposition = new Position(robot.getX(), robot.getZ(), 0.5, robot.getRotationX(), robot.getRotationZ(), robot.getRotationY());
+        List<Position> list = new ArrayList<>();
+        list.add(endposition);
+        box.FeedPositions(list);
+        
+
+        
+        robot.SetTask(null);   
     }
 
-
+    
 
 
     public Boxplace GetEmptyplace(int k){
@@ -236,12 +255,17 @@ public class World implements Model, PropertyChangeListener {
      */
     @Override
     public void update() {
-        for (Object3D object : this.worldObjects) {
-            if(object instanceof Updatable) {
-                if (((Updatable)object).update()) {
-                    pcs.firePropertyChange(Model.UPDATE_COMMAND, null, new ProxyObject3D(object));
+        try {
+            for (Object3D object : this.worldObjects) {
+                if(object instanceof Updatable) {
+                    if (((Updatable)object).update()) {
+                        pcs.firePropertyChange(Model.UPDATE_COMMAND, null, new ProxyObject3D(object));
+                    }
                 }
             }
+        }
+        catch (Exception e){
+            System.out.println("jooee hoii");
         }
     }
 

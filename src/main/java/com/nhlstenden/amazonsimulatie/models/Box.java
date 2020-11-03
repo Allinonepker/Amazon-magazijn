@@ -47,7 +47,7 @@ class Box implements Object3D, Updatable {
 
             this.x = action.getX();
             this.z = action.getZ();
-            this.y = action.getY() + 0.8;
+            this.y = action.getY();
 
             this.rotationX = action.getrotationX();
             this.rotationZ = action.getrotationZ();
@@ -95,8 +95,8 @@ class Box implements Object3D, Updatable {
         return this.rotationX;
     }
 
-    public void FeedQueue(List<Position> newactions){
-        for(Position i : newactions)
+    public void FeedPositions(List<Position> newpositions){
+        for(Position i : newpositions)
         this.actionlist.add(i);
     }
 
