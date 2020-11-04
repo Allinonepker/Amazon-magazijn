@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
 /*
  * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
@@ -18,7 +17,7 @@ class Robot implements Object3D, Updatable {
     private List<Position> actionlist = new ArrayList<Position>();
 
     private PropertyChangeSupport support;
-    
+
     private double x = 0;
     private double y = 0;
     private double z = 0;
@@ -27,9 +26,8 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    private int state = 0;
-    
-    private Box box;
+    private int state = 1;
+    private RobotTask task;
 
     public Robot(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
@@ -39,26 +37,25 @@ class Robot implements Object3D, Updatable {
         support = new PropertyChangeSupport(this);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener pcl){
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
         support.addPropertyChangeListener(pcl);
     }
 
     /*
-     * Deze update methode wordt door de World aangeroepen wanneer de
-     * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
-     * robot, in de 3D wereld steeds een beetje tijd krijgt om een update
-     * uit te voeren. In de updatemethode hieronder schrijf je dus de code
-     * die de robot steeds uitvoert (bijvoorbeeld positieveranderingen). Wanneer
-     * de methode true teruggeeft (zoals in het voorbeeld), betekent dit dat
-     * er inderdaad iets veranderd is en dat deze nieuwe informatie naar de views
-     * moet worden gestuurd. Wordt false teruggegeven, dan betekent dit dat er niks
-     * is veranderd, en de informatie hoeft dus niet naar de views te worden gestuurd.
-     * (Omdat de informatie niet veranderd is, is deze dus ook nog steeds hetzelfde als
-     * in de view)
+     * Deze update methode wordt door de World aangeroepen wanneer de World zelf
+     * geupdate wordt. Dit betekent dat elk object, ook deze robot, in de 3D wereld
+     * steeds een beetje tijd krijgt om een update uit te voeren. In de
+     * updatemethode hieronder schrijf je dus de code die de robot steeds uitvoert
+     * (bijvoorbeeld positieveranderingen). Wanneer de methode true teruggeeft
+     * (zoals in het voorbeeld), betekent dit dat er inderdaad iets veranderd is en
+     * dat deze nieuwe informatie naar de views moet worden gestuurd. Wordt false
+     * teruggegeven, dan betekent dit dat er niks is veranderd, en de informatie
+     * hoeft dus niet naar de views te worden gestuurd. (Omdat de informatie niet
+     * veranderd is, is deze dus ook nog steeds hetzelfde als in de view)
      */
     @Override
     public boolean update() {
-        if(!actionlist.isEmpty()){
+        if (!actionlist.isEmpty()) {
             Position action = actionlist.remove(0);
 
             this.x = action.getX();
@@ -68,36 +65,43 @@ class Robot implements Object3D, Updatable {
             this.rotationX = action.getrotationX();
             this.rotationZ = action.getrotationZ();
             this.rotationY = action.getrotationY();
-            
-            if(box != null){
 
-            }
             
+
+            return true;
+
+        } else {
+            if(state == 0)
+            return false;
+
+            UpdateState(state + 1);
             return true;
         }
-        else
-        {
-            if (this.state == 1)
-            	support.firePropertyChange("Robot", false, true);
-            if (this.state == 2)
-            	support.firePropertyChange("Robot", false, true);
-        }
-        return false;
     }
-    
-    //Deze methode geeft terug een Positie object get o.a. de huidige coördinaten van het object
+    public void UpdateState(int newstate){
+        int oldstate = state;
+        state = newstate;
+        support.firePropertyChange("Robot", oldstate, newstate);
+    }
+
+
+
+
+
+
     public Position getPosition(){
         Position position = new Position(this.x, this.z, this.y, this.rotationX, this.rotationZ, this.rotationY);
         return position;
     }
-
-    //Deze methode pakt een doos
-    public void PickupBox(Box box){
-        this.box = box;
+    public void SetTask(RobotTask task){
+        this.task = task;
     }
 
-    //Deze methode 
-    public void FeedQueue(List<Position> newactions){
+    public RobotTask GetTask(){
+        return this.task;
+    }
+
+    public void FeedPositions(List<Position> newactions){
         for(Position i : newactions)
         this.actionlist.add(i);
     }

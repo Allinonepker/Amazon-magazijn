@@ -5,7 +5,7 @@ public class RobotTask {
     private Box box;
     private boolean newbox;
 
-    RobotTask (Box box, boolean newbox){
+    RobotTask(Box box, boolean newbox){
 
         this.box = box;
         this.newbox = newbox;

@@ -1,6 +1,5 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.UUID;

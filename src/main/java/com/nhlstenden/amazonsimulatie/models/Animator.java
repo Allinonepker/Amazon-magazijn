@@ -26,8 +26,8 @@ public class Animator {
         while(!path.isEmpty()){
             int[] action = path.remove(0);
 
-            double verticalchange = (action[0] - (lastposition.getX() - 0.5)) / fpa;
-            double horizontalchange = (action[1] - (lastposition.getZ() - 0.5)) / fpa;
+            double verticalchange = (action[0] - (lastposition.getX())) / fpa;
+            double horizontalchange = (action[1] - (lastposition.getZ())) / fpa;
 
             double wanteddirection = 0;
             if(verticalchange > 0){
