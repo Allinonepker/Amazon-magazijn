@@ -1,18 +1,11 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 class Box implements Object3D, Updatable {
-	private UUID uuid;
-
-	private boolean toTruck;
-	
-	private PropertyChangeSupport support;
+	private UUID uuid;	
 	
 	StateBox stateBox;
 	
@@ -31,49 +24,36 @@ class Box implements Object3D, Updatable {
     private List<Position> actionlist = new ArrayList<>();
 
     private boolean taken = false;
-    private boolean newbox = true;
 
+	public Object storageplace;
     
     public Box(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.y = y;
-        this.toTruck = true;
         stateBox = StateBox.NEW;
-        support = new PropertyChangeSupport(this);
     }
     
     public boolean getTaken() {
     	return taken;
     }
     
-    public void addPropertyChangeListener(PropertyChangeListener pcl){
-        support.addPropertyChangeListener(pcl);
-    }
-    
-    public void giveTaken(boolean taken) {
+    public void setTaken(boolean taken) {
     	this.taken = taken;
     }
 
-
-
-    
-    public boolean getToTruck() {
-    	return toTruck;	
-    }
-    
-    public void setToTruck(boolean toTruck) {
-    	this.toTruck = toTruck;
-    }
-    
     public void setStateBox(StateBox state) {
 		this.stateBox = state;
-		support.firePropertyChange("Box", StateBox.NEW, StateBox.OLD);
 	}
     
     public StateBox getStateBox() {
     	return this.stateBox;
+    }
+
+    public void FeedPositions(List<Position> newpositions){
+        for(Position i : newpositions)
+        this.actionlist.add(i);
     }
     
     @Override
@@ -129,11 +109,6 @@ class Box implements Object3D, Updatable {
     @Override
     public double getRotationX() {
         return this.rotationX;
-    }
-
-    public void FeedPositions(List<Position> newpositions){
-        for(Position i : newpositions)
-        this.actionlist.add(i);
     }
 
     @Override
