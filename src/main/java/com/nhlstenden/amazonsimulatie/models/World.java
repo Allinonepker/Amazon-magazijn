@@ -5,15 +5,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 
-import javax.management.InstanceNotFoundException;
-
-import com.fasterxml.jackson.databind.ser.impl.UnwrappingBeanPropertyWriter;
 import com.nhlstenden.amazonsimulatie.models.Box.StateBox;
-
-import ch.qos.logback.core.rolling.helper.ArchiveRemover;
 
 /*
  * Deze class is een versie van het model van de simulatie. In dit geval is het
@@ -36,11 +30,10 @@ public class World implements Model, PropertyChangeListener {
     private List<Robot> robots;
     private List<Box> boxes;
     private List<RobotPath> robotpaths;
-    private Truck truck;
+ //   private Truck truck;
     private List<RobotTask> robottasks;
     private List<Storageplace> storageplaces;
-    
-    private int amountBoxesToBePickedUp = 0;
+
     
     private Shortestpath shortestpath = new Shortestpath();
     private Animator animator = new Animator(5);
@@ -65,15 +58,15 @@ public class World implements Model, PropertyChangeListener {
         this.storageplaces = new ArrayList<>();
     	
         this.worldObjects = new ArrayList<>();
-        this.truck = new Truck(100, 0, 15);
+ /*      this.truck = new Truck(100, 0, 15);
         
         this.truck.addPropertyChangeListener(e -> {
         	System.out.println("test truck");
         	if ((boolean) e.getNewValue() == true && truck.getSpawnedBoxes() == false && truck.standingStill() == true) {
-        		spawnBoxes(truck);
+        		spawnBoxes();
         	}	
         });
-
+*/
         for (int i = 0; i < layout[0].length; i++) { 
             for (int j = 0; j < layout[1].length; j++) {
                 
@@ -101,15 +94,10 @@ public class World implements Model, PropertyChangeListener {
             	if (layout[i][j] == 5) {
                     Storageplace storageplace = new Storageplace(i, j, 0.1);
                     Box box = new Box(i, j, 0.5);
+                    box.setStateBox(StateBox.OLD);
                     storageplace.FillPlace(box);
                     boxes.add(box);
                     storageplaces.add(storageplace);
-                	box.addPropertyChangeListener(e -> {
-            			if (this.amountBoxesToBePickedUp > 4 && box.getStateBox() == StateBox.OLD) {
-                			removeBox(box);
-                			this.amountBoxesToBePickedUp -= 1;
-                        }	
-                    });
                 }       		
             }
         }
@@ -117,7 +105,9 @@ public class World implements Model, PropertyChangeListener {
         this.worldObjects.addAll(this.robotpaths);
         this.worldObjects.addAll(this.docks);
         this.worldObjects.addAll(this.boxes);
-        this.worldObjects.add(this.truck);  
+        SpawnBoxes(5);
+        BringBoxestdock(5);
+ //       this.worldObjects.add(this.truck);  
     }
 
     @Override
@@ -126,7 +116,6 @@ public class World implements Model, PropertyChangeListener {
 
             int i = (int) evt.getNewValue();
             Robot robot = (Robot)evt.getSource();
-
 
             if(i == 2){
                 StartNewTask(robot);
@@ -156,6 +145,7 @@ public class World implements Model, PropertyChangeListener {
         Position robotposition = robot.getPosition();
 
         Box box = task.Getbox();
+        box.setTaken(true);
 
         double boxX = box.getX();
         double boxZ = box.getZ();        
@@ -191,29 +181,28 @@ public class World implements Model, PropertyChangeListener {
         storagelocation.FillPlace(box);
 
         List<int[]> path = shortestpath.getShortestpath(layout, (int)robotposition.getX(), (int)robotposition.getZ(), (int)storagelocation.getX(), (int)storagelocation.getZ());
-        List<Position> newpositions = animator.GetAnimation(path, robotposition);
+        List<Position> robotpositions = animator.GetAnimation(path, robotposition);
 
-        robot.FeedPositions(newpositions);
-        box.FeedPositions(newpositions);
+        List<Position> boxpositions = new ArrayList<>();
+        for (Position i : robotpositions){
+            boxpositions.add(new Position(i.getX(), i.getZ(), i.getY() + 0.8, i.getrotationX(), i.getrotationZ(), i.getrotationY()));
+        }
+        robot.FeedPositions(robotpositions);
+        box.FeedPositions(boxpositions);
     }
 
     public void Putdownbox(Robot robot){
 
         RobotTask task = robot.GetTask();
         Box box = task.Getbox();
-
+        box.setTaken(false);
         Position endposition = new Position(robot.getX(), robot.getZ(), 0.5, robot.getRotationX(), robot.getRotationZ(), robot.getRotationY());
         List<Position> list = new ArrayList<>();
         list.add(endposition);
         box.FeedPositions(list);
         
-
-        
         robot.SetTask(null);   
     }
-
-    
-
 
     public Boxplace GetEmptyplace(int k){
 
@@ -257,22 +246,6 @@ public class World implements Model, PropertyChangeListener {
         }
         return place;
     }
-
-        
-
-
-    
-
-    private void pickingUp() {
-    	ListIterator<Box> iterator = this.boxes.listIterator();
-    	while (iterator.hasNext()) {
-			if (iterator.next().getStateBox() == StateBox.OLD) {
-				iterator.remove();
-				this.worldObjects.remove(iterator);
-			}
-		}
-		this.truck.setToGoBack();
-	}
     
     public void removeBox(Box box) {
     	System.out.println("Box removed");
@@ -290,9 +263,8 @@ public class World implements Model, PropertyChangeListener {
      */
     @Override
     public void update() {
-    	ListIterator iterator = this.worldObjects.listIterator();
     	try {
-    		System.out.println(this.amountBoxesToBePickedUp);
+    //		System.out.println(this.amountBoxesToBePickedUp);
             for (Object3D object : this.worldObjects) {
                 if(object instanceof Updatable) {
                     if (((Updatable)object).update()) {
@@ -307,27 +279,37 @@ public class World implements Model, PropertyChangeListener {
 
     }
 
-    
+    public void SpawnBoxes(int amount) {
+        System.out.println("Spawning boxes");
+        for(int i = 0; i < amount ; i++){
+            Boxplace dock = GetEmptyplace(1);
+            if (dock != null){
+                Box box = new Box(dock.getX(), dock.getZ(), 0.5);
+                dock.FillPlace(box);
+                boxes.add(box);
+                this.worldObjects.add(box);
+                robottasks.add(new RobotTask(box, true));
+            }
+        }
+    }
 
-    
-    public void spawnBoxes(Object3D objectTruck) {
-    	System.out.println("Spawning boxes");
-    	for (Object3D objectDock : this.docks) {
-    				Box box = new Box(objectDock.getX(), objectDock.getZ(), 0.5);
-    				this.boxes.add(box);
-    				this.worldObjects.add(box);
-            		box.addPropertyChangeListener(e -> {
-            			if (e.getNewValue() == StateBox.OLD)
-            				this.amountBoxesToBePickedUp += 1;
-            			if (this.amountBoxesToBePickedUp > 4 && box.getStateBox() == StateBox.OLD) {
-                			removeBox(box);
-                			this.amountBoxesToBePickedUp -=1;
-            			}
-            		});
-//    				box.setStateBox(StateBox.OLD);
-    			}
-    	this.truck.setSpawnedBoxes(true);
-		}
+    public void BringBoxestdock(int amount){
+        List<Box> boxesnottaken = new ArrayList<>();
+        for(Box i :boxes){
+            if(i.getTaken() == false && i.stateBox == StateBox.OLD){
+                boxesnottaken.add(i);
+            }
+        }
+        for(int i = 0; i < amount; i++){
+            if(boxesnottaken.size() == 0)
+                return;
+            Random random = new Random();
+            int randomplace = random.nextInt(boxesnottaken.size());
+            robottasks.add(new RobotTask(boxesnottaken.remove(randomplace), false));                
+        }
+    }
+
+
     
     /*
      * Standaardfunctionaliteit. Hoeft niet gewijzigd te worden.

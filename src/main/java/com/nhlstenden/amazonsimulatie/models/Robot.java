@@ -65,9 +65,6 @@ class Robot implements Object3D, Updatable {
             this.rotationX = action.getrotationX();
             this.rotationZ = action.getrotationZ();
             this.rotationY = action.getrotationY();
-
-            
-
             return true;
 
         } else {
@@ -78,21 +75,19 @@ class Robot implements Object3D, Updatable {
             return true;
         }
     }
+
+
     public void UpdateState(int newstate){
         int oldstate = state;
         state = newstate;
         support.firePropertyChange("Robot", oldstate, newstate);
     }
 
-
-
-
-
-
     public Position getPosition(){
         Position position = new Position(this.x, this.z, this.y, this.rotationX, this.rotationZ, this.rotationY);
         return position;
     }
+
     public void SetTask(RobotTask task){
         this.task = task;
     }
@@ -109,10 +104,6 @@ class Robot implements Object3D, Updatable {
     @Override
     public String getUUID() {
         return this.uuid.toString();
-    }
-
-    public void ChangeState(int i){
-        this.state = i; // 0 is sleep, 1 is going to storageplace, 2 is going to dock, evt 3 is going to sleepplace
     }
 
     @Override
