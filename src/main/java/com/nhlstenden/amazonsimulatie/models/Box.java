@@ -20,6 +20,8 @@ class Box implements Object3D, Updatable {
 		NEW, OLD
 	}
 	
+	private boolean launch = false;
+	
     private double x = 0;
     private double y = 0;
     private double z = 0;
@@ -48,11 +50,19 @@ class Box implements Object3D, Updatable {
     	return taken;
     }
     
+<<<<<<< Updated upstream
     public void addPropertyChangeListener(PropertyChangeListener pcl){
         support.addPropertyChangeListener(pcl);
     }
     
     public void giveTaken(boolean taken) {
+=======
+    public void launch() {
+    	this.launch = true;
+    }
+    
+    public void setTaken(boolean taken) {
+>>>>>>> Stashed changes
     	this.taken = taken;
     }
 
@@ -78,6 +88,9 @@ class Box implements Object3D, Updatable {
     
     @Override
     public boolean update() {
+    	if (this.launch == true)
+    		this.y = 10000;
+    	
         if (!actionlist.isEmpty()) {
             Position action = actionlist.remove(0);
 

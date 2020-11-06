@@ -39,7 +39,7 @@ public class World implements Model {
     private int amountBoxesToBePickedUp = 0;
     
     private Shortestpath shortestpath = new Shortestpath();
-    private Animator animator = new Animator(5);
+    private Animator animator = new Animator(1);
     
     /*
      * Dit onderdeel is nodig om veranderingen in het model te kunnen doorgeven aan de controller.
@@ -59,9 +59,14 @@ public class World implements Model {
     	this.robotpaths = new ArrayList<>();
         this.robottasks = new ArrayList<>();
         this.storageplaces = new ArrayList<>();
+<<<<<<< Updated upstream
     	
         this.worldObjects = new ArrayList<>();
         this.truck = new Truck(100, 0, 15);
+=======
+        this.truck = new Truck(100, 0, 14.5);
+        truck.addPropertyChangeListener(this);
+>>>>>>> Stashed changes
         
         this.truck.addPropertyChangeListener(e -> {
         	System.out.println("test truck");
@@ -311,6 +316,62 @@ public class World implements Model {
         }
         this.truck.setSpawnedBoxes(true);
     }
+<<<<<<< Updated upstream
+=======
+
+    public void BringBoxestodock(int amount){
+        List<Box> boxesnottaken = new ArrayList<>();
+        for(Box i : boxes){
+            if(i.getTaken() == false && i.stateBox == StateBox.OLD){
+                boxesnottaken.add(i);
+            }
+        }
+        for(int i = 0; i < amount; i++){
+            if(boxesnottaken.size() == 0)
+                return;
+            Random random = new Random();
+            int randomplace = random.nextInt(boxesnottaken.size());
+            robottasks.add(new RobotTask(boxesnottaken.remove(randomplace), false));                
+        }
+    }
+
+    public int CountFullDocks(){
+        int k = 0;
+        for (Dock i : docks){
+            if(!i.IsEmpty()){
+            Box box  = i.GetBox();
+                if (box.getStateBox() == StateBox.OLD && box.getTaken() == false){
+                    k++;
+                }
+            }
+        }
+        return k;
+    }
+
+    public void EmptyDock(){
+        for (Dock i : docks){
+            if(!i.IsEmpty()){
+            Box box  = i.GetBox();
+                if (box.getStateBox() == StateBox.OLD){
+                	box.launch();
+                    this.boxes.remove(box);
+                    i.EmptyPlace();
+                    //this.worldObjects.remove(box);
+                }
+            }
+        }
+    }
+
+    public void StartRobots(){
+        for (Robot i : robots){
+            if(i.getState() == 0){
+                i.UpdateState(1);
+            }
+        }
+    }
+
+
+>>>>>>> Stashed changes
     
     /*
      * Standaardfunctionaliteit. Hoeft niet gewijzigd te worden.

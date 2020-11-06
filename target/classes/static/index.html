@@ -13,6 +13,8 @@
         naar updates vanaf de server over de websocket communicatie.
     -->
     <script>
+
+
         function parseCommand(input = "") {
             return JSON.parse(input);
         }
@@ -29,7 +31,7 @@
 
             function init() {
                 
-                camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 200);
+                camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 500);
                 cameraControls = new THREE.OrbitControls(camera);
                 cameraControls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
                 cameraControls.dampingFactor = 0.05;
@@ -139,6 +141,32 @@
                         
                     });
                 });
+                
+                mtlLoader.load("textures/warehouse/warehouse.mtl", function(materials) {
+                    materials.preload();
+                    const objLoader = new THREE.OBJLoader();
+                    objLoader.setMaterials(materials);
+                    objLoader.load("textures/warehouse/warehouse.obj", function(mesh){
+                        
+                        mesh.traverse(function(node) {
+                            if (node instanceof THREE.Mesh) {
+                                node.castShadow = true;
+                                node.receiveShadow = true;
+                            }
+                        })
+                        mesh.scale.set(10,10,10);
+                        scene.add(mesh);  
+                        mesh.rotation.y = -Math.PI/2;
+                       	mesh.position.z = 15;
+                       	mesh.position.x = -12;
+                    });
+                });
+				                
+
+                		
+
+                
+
                 
                 const loader = new THREE.CubeTextureLoader();
                 //dust == daytime
@@ -326,7 +354,7 @@
     <script src="OrbitControls.js"></script>
     <script src="OBJLoader.js"></script>
     <script src="MTLLoader.js"></script>
-    <script src="Camera.js"></script>
+
 
        
 </body>

@@ -84,6 +84,7 @@ class Truck implements Object3D, Updatable {
     }
     
     public void goingToDock() {
+<<<<<<< Updated upstream
 		if (this.x != 37 ) {
         	this.x -= 1;
 		}
@@ -94,6 +95,13 @@ class Truck implements Object3D, Updatable {
     
     public void setToGoBack() {
     	this.goingBack = true;
+=======
+        List<Position> positions = new ArrayList<>();
+        for(double i = 100; i > 32; i--){
+            positions.add(new Position(i, this.z , this.y, this.rotationX, this.rotationZ, this.rotationY));
+        }
+        FeedPositions(positions);	
+>>>>>>> Stashed changes
     }
     
     @Override
