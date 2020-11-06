@@ -1,5 +1,7 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.UUID;
 
 /*
@@ -12,6 +14,8 @@ class Truck implements Object3D, Updatable {
 
     private boolean goingBack = false;
     private boolean goingToDock = true;
+
+    private PropertyChangeSupport support;
     
     private boolean spawnedBoxes = false;
     
@@ -28,7 +32,9 @@ class Truck implements Object3D, Updatable {
         this.x = x;
         this.z = z;
         this.y = y;
+        support = new PropertyChangeSupport(this);
     }
+    
     /*
      * Deze update methode wordt door de World aangeroepen wanneer de
      * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
@@ -42,39 +48,71 @@ class Truck implements Object3D, Updatable {
      * (Omdat de informatie niet veranderd is, is deze dus ook nog steeds hetzelfde als
      * in de view)
      */
+    
     @Override
     public boolean update() {
+    	System.out.print(this.standingStill());
     	if (goingToDock == true) {
-    		if (this.x != 37 ) {
-            	this.x -= 1;
-            	return true;
-    		}
-    		goingToDock = false;
-			return false;
-    	}
-    	
-    	if (goingBack == true) {
-    		if (this.x != 100) {
-    			this.x += 1;
+    			goingToDock();
     			return true;
     		}
-    		goingBack = false;
-    		return false;
-    	}
-
-        return false;
+    	else if (goingBack == true) {
+    			goingBack();
+    			return true;
+    		}
+		return false;
+    }
+    
+    public void addPropertyChangeListener(PropertyChangeListener pcl){
+        support.addPropertyChangeListener(pcl);
     }
 
+    public boolean getGoingBack() {
+    	return goingBack;
+    }
+    
+    public boolean getGoingToDock() {
+    	return goingToDock;
+    }
+    
+    public void goingBack() {
+		if (this.x != 100) {
+			this.x += 1;
+		}
+		else
+    		goingBack = false;
+    }
+    
+    public void goingToDock() {
+		if (this.x != 37 ) {
+        	this.x -= 1;
+		}
+		else 
+    		goingToDock = false;
+    		support.firePropertyChange("Truck", false, true);
+    }
+    
+    public void setToGoBack() {
+    	this.goingBack = true;
+    }
+    
     @Override
     public String getUUID() {
         return this.uuid.toString();
     }
     
+    public boolean getSpawnedBoxes() { 
+    	return spawnedBoxes;
+    }
+    
     public void setSpawnedBoxes(boolean spawnedBoxes) {
     	this.spawnedBoxes = spawnedBoxes;
     }
-    public boolean getState() {
-    	return !(goingBack && goingToDock);
+    
+    public boolean standingStill() {
+    	if (this.goingBack == false && this.goingToDock == false) 
+    		return true;
+    	return false;
     }
     
     @Override
@@ -117,4 +155,5 @@ class Truck implements Object3D, Updatable {
     public double getRotationZ() {
         return this.rotationZ;
     }
+
 }

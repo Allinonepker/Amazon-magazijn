@@ -23,6 +23,8 @@
             var camera, scene, renderer;
             var cameraControls;
 
+
+
             var worldObjects = {};
 
             function init() {
@@ -37,9 +39,9 @@
                 cameraControls.maxPolarAngle = Math.PI / 2.1;
                 cameraControls.rotateSpeed = 0.04;
                 cameraControls.panSpeed = 0.04;
-                camera.position.z = 15;
-                camera.position.y = 5;
-                camera.position.x = 15;
+                camera.position.z = 50;
+                camera.position.y = 50;
+                camera.position.x = 100;
                 cameraControls.update();
                 //Scene
                 scene = new THREE.Scene();
@@ -331,6 +333,8 @@
     <script src="OrbitControls.js"></script>
     <script src="OBJLoader.js"></script>
     <script src="MTLLoader.js"></script>
+    <script src="Camera.js"></script>
+
 
 </body>
 

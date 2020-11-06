@@ -19,7 +19,7 @@ public class Position {
         this.yr = yr;
     }
 
-    public double getX() {
+	public double getX() {
         return x;
     }
     public double getZ() {
