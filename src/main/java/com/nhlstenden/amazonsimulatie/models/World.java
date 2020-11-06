@@ -30,7 +30,7 @@ public class World implements Model, PropertyChangeListener {
     private List<Robot> robots;
     private List<Box> boxes;
     private List<RobotPath> robotpaths;
- //   private Truck truck;
+    private Truck truck;
     private List<RobotTask> robottasks;
     private List<Storageplace> storageplaces;
 
@@ -50,50 +50,47 @@ public class World implements Model, PropertyChangeListener {
      */
     public World() {
 
-    	this.docks = new ArrayList<Dock>();
-    	this.robots = new ArrayList<Robot>();
-    	this.boxes = new ArrayList<Box>();
+    	this.docks = new ArrayList<>();
+    	this.robots = new ArrayList<>();
+    	this.boxes = new ArrayList<>();
     	this.robotpaths = new ArrayList<>();
         this.robottasks = new ArrayList<>();
         this.storageplaces = new ArrayList<>();
-    	
-        this.worldObjects = new ArrayList<>();
- /*      this.truck = new Truck(100, 0, 15);
+        this.truck = new Truck(100, 0, 15);
+        truck.addPropertyChangeListener(this);
         
-        this.truck.addPropertyChangeListener(e -> {
-        	System.out.println("test truck");
-        	if ((boolean) e.getNewValue() == true && truck.getSpawnedBoxes() == false && truck.standingStill() == true) {
-        		spawnBoxes();
-        	}	
-        });
-*/
+        this.worldObjects = new ArrayList<>();
+
         for (int i = 0; i < layout[0].length; i++) { 
             for (int j = 0; j < layout[1].length; j++) {
-                
+            	if (layout[i][j] == 0) {
+            		this.robotpaths.add(new RobotPath(i,j,2.1));
+            	}
+            	
             	if (layout[i][j] == 1) {
-            		this.robotpaths.add(new RobotPath(i,j,0.1));
+            		this.robotpaths.add(new RobotPath(i,j,2.1));
             	}
                 
                 if (layout[i][j] == 2) {
-                    Robot robot = new Robot(i,j,0.15);
+                    Robot robot = new Robot(i,j,2.15);
                     this.robots.add(robot);
-                    this.robotpaths.add(new RobotPath(i,j,0.1));
+                    this.robotpaths.add(new RobotPath(i,j,2.1));
                     robot.addPropertyChangeListener(this);
             	}
                 
                 if (layout[i][j] == 3) {
-                    Storageplace storageplace = new Storageplace(i, j, 0.1);
+                    Storageplace storageplace = new Storageplace(i, j, 2.1);
                     storageplaces.add(storageplace);
                 }
                 
                 if (layout[i][j] == 4) {
-                    Dock dock = new Dock(i, j, 0.1);
+                    Dock dock = new Dock(i, j, 2.1);
                     docks.add(dock);
                 }
 
             	if (layout[i][j] == 5) {
-                    Storageplace storageplace = new Storageplace(i, j, 0.1);
-                    Box box = new Box(i, j, 0.5);
+                    Storageplace storageplace = new Storageplace(i, j, 2.1);
+                    Box box = new Box(i, j, 2.5);
                     box.setStateBox(StateBox.OLD);
                     storageplace.FillPlace(box);
                     boxes.add(box);
@@ -105,9 +102,8 @@ public class World implements Model, PropertyChangeListener {
         this.worldObjects.addAll(this.robotpaths);
         this.worldObjects.addAll(this.docks);
         this.worldObjects.addAll(this.boxes);
-        SpawnBoxes(5);
-        BringBoxestdock(5);
- //       this.worldObjects.add(this.truck);  
+        this.worldObjects.add(this.truck);
+  
     }
 
     @Override
@@ -135,8 +131,16 @@ public class World implements Model, PropertyChangeListener {
         }
 
         if (evt.getPropertyName() == "Truck"){
-
+            int i = (int) evt.getNewValue();
+            if(i == 3){
+                EmptyDock();
+                SpawnBoxesonDock(8);
+                BringBoxestodock(8);
+                StartRobots();
+                truck.UpdateState(0);
+            }
         }
+         
     }
 
     public void StartNewTask(Robot robot){
@@ -187,8 +191,9 @@ public class World implements Model, PropertyChangeListener {
         for (Position i : robotpositions){
             boxpositions.add(new Position(i.getX(), i.getZ(), i.getY() + 0.8, i.getrotationX(), i.getrotationZ(), i.getrotationY()));
         }
-        robot.FeedPositions(robotpositions);
         box.FeedPositions(boxpositions);
+        robot.FeedPositions(robotpositions);
+
     }
 
     public void Putdownbox(Robot robot){
@@ -196,7 +201,8 @@ public class World implements Model, PropertyChangeListener {
         RobotTask task = robot.GetTask();
         Box box = task.Getbox();
         box.setTaken(false);
-        Position endposition = new Position(robot.getX(), robot.getZ(), 0.5, robot.getRotationX(), robot.getRotationZ(), robot.getRotationY());
+        box.setStateBox(StateBox.OLD);
+        Position endposition = new Position(robot.getX(), robot.getZ(), robot.getY()+ 0.35, robot.getRotationX(), robot.getRotationZ(), robot.getRotationY());
         List<Position> list = new ArrayList<>();
         list.add(endposition);
         box.FeedPositions(list);
@@ -246,12 +252,6 @@ public class World implements Model, PropertyChangeListener {
         }
         return place;
     }
-    
-    public void removeBox(Box box) {
-    	System.out.println("Box removed");
-    	this.worldObjects.remove(box);
-    	this.boxes.remove(box);
-    }
     /*
      * Deze methode wordt gebruikt om de wereld te updaten. Wanneer deze methode wordt aangeroepen,
      * wordt op elk object in de wereld de methode update aangeroepen. Wanneer deze true teruggeeft
@@ -264,7 +264,6 @@ public class World implements Model, PropertyChangeListener {
     @Override
     public void update() {
     	try {
-    //		System.out.println(this.amountBoxesToBePickedUp);
             for (Object3D object : this.worldObjects) {
                 if(object instanceof Updatable) {
                     if (((Updatable)object).update()) {
@@ -272,19 +271,24 @@ public class World implements Model, PropertyChangeListener {
                     }
                 }
             }
-    	}
+  	}
     	catch (Exception e) {
 			System.out.println("SAME FUCKING ERROR");
-		}
+     }
+        
+        if(CountFullDocks() >= 8 && truck.getState() == 0){
+            truck.UpdateState(4);
+        }
+        
 
     }
 
-    public void SpawnBoxes(int amount) {
+    public void SpawnBoxesonDock(int amount) {
         System.out.println("Spawning boxes");
         for(int i = 0; i < amount ; i++){
             Boxplace dock = GetEmptyplace(1);
             if (dock != null){
-                Box box = new Box(dock.getX(), dock.getZ(), 0.5);
+                Box box = new Box(dock.getX(), dock.getZ(), dock.getY() + 0.5);
                 dock.FillPlace(box);
                 boxes.add(box);
                 this.worldObjects.add(box);
@@ -293,9 +297,9 @@ public class World implements Model, PropertyChangeListener {
         }
     }
 
-    public void BringBoxestdock(int amount){
+    public void BringBoxestodock(int amount){
         List<Box> boxesnottaken = new ArrayList<>();
-        for(Box i :boxes){
+        for(Box i : boxes){
             if(i.getTaken() == false && i.stateBox == StateBox.OLD){
                 boxesnottaken.add(i);
             }
@@ -306,6 +310,41 @@ public class World implements Model, PropertyChangeListener {
             Random random = new Random();
             int randomplace = random.nextInt(boxesnottaken.size());
             robottasks.add(new RobotTask(boxesnottaken.remove(randomplace), false));                
+        }
+    }
+
+    public int CountFullDocks(){
+        int k = 0;
+        for (Dock i : docks){
+            if(!i.IsEmpty()){
+            Box box  = i.GetBox();
+                if (box.getStateBox() == StateBox.OLD && box.getTaken() == false){
+                    k++;
+                }
+            }
+        }
+        return k;
+    }
+
+    public void EmptyDock(){
+        for (Dock i : docks){
+            if(!i.IsEmpty()){
+            Box box  = i.GetBox();
+                if (box.getStateBox() == StateBox.OLD){
+                    
+                    this.boxes.remove(box);
+                    i.EmptyPlace();
+                    this.worldObjects.remove(box);
+                }
+            }
+        }
+    }
+
+    public void StartRobots(){
+        for (Robot i : robots){
+            if(i.getState() == 0){
+                i.UpdateState(1);
+            }
         }
     }
 

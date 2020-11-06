@@ -33,14 +33,18 @@ public class DefaultWebSocketView implements View {
     @Override
     public void update(String event, Object3D data) {
         try {
+            synchronized(sesion){
             if(this.sesion.isOpen()) {
+                synchronized(sesion){
                 this.sesion.sendMessage(new TextMessage("{"
                 + surroundString("command") + ": " + surroundString(event) + ","
                 + surroundString("parameters") + ": " + jsonifyObject3D(data)
               + "}"));
+                }
             }
             else {
                 this.onClose.execute();
+            }
             }
             
         } catch (IOException e) {

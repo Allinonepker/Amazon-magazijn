@@ -30,19 +30,14 @@ public class Animator {
             double horizontalchange = (action[1] - (lastposition.getZ())) / fpa;
 
             double wanteddirection = 0;
-            if(verticalchange > 0){
+            if(verticalchange > 0 || verticalchange < 0){
                 wanteddirection = 0.25;
             }
-            if(verticalchange < 0){
-                wanteddirection = 0.75;
-            }
-            if(horizontalchange > 0){
+            if(horizontalchange > 0 || horizontalchange < 0){
                 wanteddirection = 0;
             }
-            if(horizontalchange < 0){
-                wanteddirection = 0.5;
-            }
             if(wanteddirection != direction){
+                
                 double rotationneeded = wanteddirection - direction;
                 if(rotationneeded > 0.5){
                     rotationneeded = rotationneeded - 1;

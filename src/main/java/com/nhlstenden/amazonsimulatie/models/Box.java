@@ -72,7 +72,7 @@ class Box implements Object3D, Updatable {
     
             return true;
         }
-    return false;
+    return true;
     }
 
     @Override

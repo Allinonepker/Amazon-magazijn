@@ -65,6 +65,7 @@ class Robot implements Object3D, Updatable {
             this.rotationX = action.getrotationX();
             this.rotationZ = action.getrotationZ();
             this.rotationY = action.getrotationY();
+
             return true;
 
         } else {
@@ -81,6 +82,10 @@ class Robot implements Object3D, Updatable {
         int oldstate = state;
         state = newstate;
         support.firePropertyChange("Robot", oldstate, newstate);
+    }
+    
+    public int getState(){
+        return this.state;
     }
 
     public Position getPosition(){

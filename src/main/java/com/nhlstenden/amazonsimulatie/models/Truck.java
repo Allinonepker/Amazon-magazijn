@@ -2,6 +2,8 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /*
@@ -12,20 +14,19 @@ import java.util.UUID;
 class Truck implements Object3D, Updatable {
     private UUID uuid;
 
-    private boolean goingBack = false;
-    private boolean goingToDock = true;
+    private List<Position> actionlist = new ArrayList<Position>();
 
     private PropertyChangeSupport support;
     
-    private boolean spawnedBoxes = false;
-    
-    private double x = 0;
+    private double x = 110;
     private double y = 0;
     private double z = 0;
 
     private double rotationX = 0;
     private double rotationY = Math.PI / 2;
     private double rotationZ = 0;
+
+    private int state = 1;
 
     public Truck(double x, double y, double z) {
         this.uuid = UUID.randomUUID();
@@ -51,69 +52,88 @@ class Truck implements Object3D, Updatable {
     
     @Override
     public boolean update() {
-    	System.out.print(this.standingStill());
-    	if (goingToDock == true) {
-    			goingToDock();
-    			return true;
-    		}
-    	else if (goingBack == true) {
-    			goingBack();
-    			return true;
-    		}
-		return false;
+        if (!actionlist.isEmpty()) {
+            Position action = actionlist.remove(0);
+
+            this.x = action.getX();
+            this.z = action.getZ();
+            this.y = action.getY();
+
+            this.rotationX = action.getrotationX();
+            this.rotationZ = action.getrotationZ();
+            this.rotationY = action.getrotationY();
+
+            return true;
+
+        } else {
+            if(state == 0)
+            return false;
+
+            UpdateState(state + 1);
+            if(state == 2){
+                goingToDock();
+            }
+            if(state == 5){
+                goingBack();
+            }
+            if(state == 6){
+                state = 1;
+            }
+            
+            return true;
+        }
     }
     
     public void addPropertyChangeListener(PropertyChangeListener pcl){
         support.addPropertyChangeListener(pcl);
     }
 
-    public boolean getGoingBack() {
-    	return goingBack;
+    public void UpdateState(int newstate){
+        int oldstate = state;
+        state = newstate;
+        support.firePropertyChange("Truck", oldstate, newstate);
     }
-    
-    public boolean getGoingToDock() {
-    	return goingToDock;
+
+    public int getState(){
+        return this.state;
     }
     
     public void goingBack() {
-		if (this.x != 100) {
-			this.x += 1;
-		}
-		else
-    		goingBack = false;
+        List<Position> positions = new ArrayList<>();
+        for(double i = 0; i < 75; i++){
+            positions.add(new Position(this.x + i, this.z , this.y, this.rotationX, this.rotationZ, this.rotationY));
+        }
+        FeedPositions(positions);	
     }
     
     public void goingToDock() {
-		if (this.x != 37 ) {
-        	this.x -= 1;
-		}
-		else 
-    		goingToDock = false;
-    		support.firePropertyChange("Truck", false, true);
-    }
-    
-    public void setToGoBack() {
-    	this.goingBack = true;
+        List<Position> positions = new ArrayList<>();
+        for(double i = 0; i < 75; i++){
+            positions.add(new Position(this.x - i, this.z , this.y, this.rotationX, this.rotationZ, this.rotationY));
+        }
+        FeedPositions(positions);	
     }
     
     @Override
     public String getUUID() {
         return this.uuid.toString();
     }
-    
-    public boolean getSpawnedBoxes() { 
-    	return spawnedBoxes;
+
+    public void FeedPositions(List<Position> newactions){
+        for(Position i : newactions)
+        this.actionlist.add(i);
     }
-    
-    public void setSpawnedBoxes(boolean spawnedBoxes) {
-    	this.spawnedBoxes = spawnedBoxes;
+
+    public void TurnTruck() {
+        List<Position> positionlist = new ArrayList<>();
+
+        for (double i = 0; i <= 1; i =+ 0.1){
+            positionlist.add(new Position(this.x -(1 - i*i), this.z + i * i, this.y, this.rotationX, this.rotationZ, this.rotationY - (i * Math.PI/2)/10));
+        }
     }
-    
-    public boolean standingStill() {
-    	if (this.goingBack == false && this.goingToDock == false) 
-    		return true;
-    	return false;
-    }
+
+
+
     
     @Override
     public String getType() {
