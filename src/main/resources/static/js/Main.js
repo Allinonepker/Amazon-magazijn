@@ -258,65 +258,85 @@ window.onload = function() {
   function addWarehouse() {
       //floor
       mtlLoader.load("textures/warehousetest/roadTile_001.mtl", function(materials) {
-      materials.preload();
-      const objLoader = new THREE.OBJLoader();
-      objLoader.setMaterials(materials);
-      objLoader.load("textures/warehousetest/roadTile_001.obj", function(mesh) {
-        mesh.traverse(function(node) {
-          if (node instanceof THREE.Mesh) {
-            node.castShadow = true;
-            node.receiveShadow = true;
-          }
+        materials.preload();
+        const objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.load("textures/warehousetest/roadTile_001.obj", function(mesh) {
+          mesh.traverse(function(node) {
+            if (node instanceof THREE.Mesh) {
+              node.castShadow = true;
+              node.receiveShadow = true;
+            }
+          });
+          scene.add(mesh);
+          mesh.position.z = 30;
+          mesh.position.x = 20.5;
+          mesh.position.y = 0.5;
+          mesh.rotation.y = Math.PI / 2;
+          mesh.scale.set(10.5, 3, 6.8);
         });
-        scene.add(mesh);
-        mesh.position.z = 30;
-        mesh.position.x = 20.5;
-        mesh.position.y = 0.5;
-        mesh.rotation.y = Math.PI / 2;
-        mesh.scale.set(10.5, 3, 6.8);
       });
-    });
+
+      mtlLoader.load("textures/warehousetest/roadTile_001.mtl", function(materials) {
+        materials.preload();
+        const objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.load("textures/warehousetest/roadTile_001.obj", function(mesh) {
+          mesh.traverse(function(node) {
+            if (node instanceof THREE.Mesh) {
+              node.castShadow = true;
+              node.receiveShadow = true;
+            }
+          });
+          scene.add(mesh);
+          mesh.position.z = 19.5;
+          mesh.position.x = 24.5;
+          mesh.position.y = 0.5;
+          mesh.rotation.y = Math.PI / 2;
+          mesh.scale.set(3, 3, 2);
+        });
+      });
       
       mtlLoader.load("textures/warehousetest/old_warehouse01_upgrade.mtl", function(materials) {
-      materials.preload();
-      const objLoader = new THREE.OBJLoader();
-      objLoader.setMaterials(materials);
-      objLoader.load("textures/warehousetest/old_warehouse01_upgrade.obj", function(mesh) {
-        mesh.traverse(function(node) {
-          if (node instanceof THREE.Mesh) {
-            node.castShadow = true;
-            node.receiveShadow = true;
-          }
+        materials.preload();
+        const objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.load("textures/warehousetest/old_warehouse01_upgrade.obj", function(mesh) {
+          mesh.traverse(function(node) {
+            if (node instanceof THREE.Mesh) {
+              node.castShadow = true;
+              node.receiveShadow = true;
+            }
+          });
+          scene.add(mesh);
+          mesh.position.z = 30;
+          mesh.position.x = 10.5;
+          mesh.position.y = 10;
+          mesh.rotation.y = Math.PI / 2;
+          mesh.rotation.y = Math.PI / 2;
+          mesh.scale.set(0.05, 0.05, 0.026);
         });
-        scene.add(mesh);
-        mesh.position.z = 30;
-        mesh.position.x = 10.5;
-        mesh.position.y = 10;
-        mesh.rotation.y = Math.PI / 2;
-        mesh.rotation.y = Math.PI / 2;
-        mesh.scale.set(0.05, 0.05, 0.026);
       });
-    });
       
     
-    //Road
-    mtlLoader.load("textures/road/tile_wideStraight.mtl", function(materials) {
-      materials.preload();
-      const objLoader = new THREE.OBJLoader();
-      objLoader.setMaterials(materials);
-      objLoader.load("textures/road/tile_wideStraight.obj", function(mesh) {
-        mesh.traverse(function(node) {
-          if (node instanceof THREE.Mesh) {
-            node.castShadow = true;
-            node.receiveShadow = true;
-          }
+      //Road
+      mtlLoader.load("textures/road/tile_wideStraight.mtl", function(materials) {
+        materials.preload();
+        const objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.load("textures/road/tile_wideStraight.obj", function(mesh) {
+          mesh.traverse(function(node) {
+            if (node instanceof THREE.Mesh) {
+              node.castShadow = true;
+              node.receiveShadow = true;
+            }
+          });
+          scene.add(mesh);
+          mesh.position.set(70, 0.2, 15);
+          mesh.rotation.y = Math.PI / 2;
+          mesh.scale.set(5, 1, 100);
         });
-        scene.add(mesh);
-        mesh.position.set(70, 0.2, 15);
-        mesh.rotation.y = Math.PI / 2;
-        mesh.scale.set(5, 1, 100);
       });
-    });
   }
   socket();
   init();
