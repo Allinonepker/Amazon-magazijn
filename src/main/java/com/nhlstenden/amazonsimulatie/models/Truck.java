@@ -100,7 +100,7 @@ class Truck implements Object3D, Updatable {
     
     public void goingBack() {
         List<Position> positions = new ArrayList<>();
-        for(double i = 0; i < 75; i++){
+        for(double i = 0; i < 74; i++){
             positions.add(new Position(this.x + i, this.z , this.y, this.rotationX, this.rotationZ, this.rotationY));
         }
         FeedPositions(positions);	
@@ -108,7 +108,7 @@ class Truck implements Object3D, Updatable {
     
     public void goingToDock() {
         List<Position> positions = new ArrayList<>();
-        for(double i = 0; i < 75; i++){
+        for(double i = 0; i < 74; i++){
             positions.add(new Position(this.x - i, this.z , this.y, this.rotationX, this.rotationZ, this.rotationY));
         }
         FeedPositions(positions);	

@@ -29,23 +29,7 @@ window.onload = function() {
         //Wanneer het object dat moet worden geupdate nog niet bestaat (komt niet voor in de lijst met worldObjects op de client),
         //dan wordt het 3D model eerst aangemaakt in de 3D wereld.
         if (Object.keys(worldObjects).indexOf(command.parameters.uuid) < 0) {
-          //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
-          //Dock
-          if (command.parameters.type == "dock") {
-            var geometry = new THREE.PlaneGeometry(1, 1);
-            var material = new THREE.MeshPhongMaterial({
-              map: new THREE.TextureLoader().load("textures/stone.jpg"),
-              side: THREE.DoubleSide
-            });
-            var plane = new THREE.Mesh(geometry, material);
-            plane.rotation.x = Math.PI / 2;
-            plane.receiveShadow = true;
-            plane.castShadow = true;
-            var group = new THREE.Group();
-            group.add(plane);
-            scene.add(group);
-            worldObjects[command.parameters.uuid] = group;
-          }
+        
           //Robot
           if (command.parameters.type == "robot") {
             var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
@@ -285,31 +269,13 @@ window.onload = function() {
           }
         });
         scene.add(mesh);
-        mesh.position.z = 50;
-        mesh.position.x = 20;
+        mesh.position.z = 30;
+        mesh.position.x = 20.5;
         mesh.position.y = 0.5;
         mesh.rotation.y = Math.PI / 2;
-        mesh.scale.set(21, 3, 13.4);
+        mesh.scale.set(10.5, 3, 6.8);
       });
     });
-//      mtlLoader.load("textures/warehouse/Warehouse.mtl", function(materials) {
-//      materials.preload();
-//      const objLoader = new THREE.OBJLoader();
-//      objLoader.setMaterials(materials);
-//      objLoader.load("textures/warehouse/Warehouse.obj", function(mesh) {
-//        mesh.traverse(function(node) {
-//          if (node instanceof THREE.Mesh) {
-//            node.castShadow = true;
-//            node.receiveShadow = true;
-//          }
-//        });
-//        scene.add(mesh);
-//        mesh.position.z = -20;
-//        mesh.rotation.y = Math.PI / 2;
-//        mesh.rotation.y = Math.PI / 2;
-//        mesh.scale.set(1, 1, 1);
-//      });
-//    });
       
       mtlLoader.load("textures/warehousetest/old_warehouse01_upgrade.mtl", function(materials) {
       materials.preload();
@@ -323,53 +289,16 @@ window.onload = function() {
           }
         });
         scene.add(mesh);
-        mesh.position.z = 50;
-        mesh.position.y = 20;
+        mesh.position.z = 30;
+        mesh.position.x = 10.5;
+        mesh.position.y = 10;
         mesh.rotation.y = Math.PI / 2;
         mesh.rotation.y = Math.PI / 2;
-        mesh.scale.set(0.1, 0.1, 0.05);
+        mesh.scale.set(0.05, 0.05, 0.026);
       });
     });
       
-    //Warehouse
-//    var geometry = new THREE.PlaneGeometry(17, 10);
-//    var material = new THREE.MeshPhongMaterial({
-//      map: new THREE.TextureLoader().load("textures/stone.jpg"),
-//      side: THREE.DoubleSide
-//    });
-//    var listbuilding = [[20, 7.5, 0], [20, 22.5, 0]];
-//    for (var i = 0; i < listbuilding.length; i++) {
-//      var plane = new THREE.Mesh(geometry, material);
-//      plane.position.x = listbuilding[i][0];
-//      plane.position.y = 4.5;
-//      plane.position.z = listbuilding[i][1];
-//      plane.receiveShadow = true;
-//      plane.castShadow = true;
-//      //plane.rotation.x += Math.PI / listbuilding[i][2]
-//      scene.add(plane);
-//    }
-//    var geometry = new THREE.PlaneGeometry(15, 10);
-//    var listbuildingver = [[11.5, 15], [28.5, 15, 0]];
-//    for (var i = 0; i < listbuildingver.length; i++) {
-//      var plane = new THREE.Mesh(geometry, material);
-//      plane.position.x = listbuildingver[i][0];
-//      plane.position.y = 4.5;
-//      plane.position.z = listbuildingver[i][1];
-//      plane.receiveShadow = true;
-//      plane.castShadow = true;
-//      plane.rotation.y += Math.PI / 2;
-//      scene.add(plane);
-//    
-//    //roof
-//    var geometry = new THREE.PlaneGeometry(17, 15);
-//    var plane = new THREE.Mesh(geometry, material);
-//    plane.position.x = 20;
-//    plane.position.y = 9.5;
-//    plane.position.z = 15;
-//    plane.receiveShadow = true;
-//    plane.castShadow = true;
-//    plane.rotation.x += Math.PI / 2;
-//    scene.add(plane);
+    
     //Road
     mtlLoader.load("textures/road/tile_wideStraight.mtl", function(materials) {
       materials.preload();

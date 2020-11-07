@@ -107,9 +107,9 @@ class Shortestpath {
 		
 		List<Node> nodes = new ArrayList<Node>();
 			
-		for(int i = 0; i < 30; i++) {
-			for(int j = 0; j < 30; j++) {
-				if(layout[i][j] == 1 || layout[i][j] == 2) {
+		for(int i = 0; i < layout[0].length; i++) {
+			for(int j = 0; j < layout.length; j++) {
+				if(layout[i][j] == 1 || layout[i][j] == 2 || layout[i][j] == 6) {
 					Node newnode = new Node((i),j);
 					nodes.add(newnode);
 				}
