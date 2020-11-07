@@ -23,7 +23,8 @@ public class World implements Model, PropertyChangeListener {
      * Deze objecten moeten uiteindelijk ook in de lijst passen (overerving). Daarom is dit
      * een lijst van Object3D onderdelen. Deze kunnen in principe alles zijn. (Robots, vrachrtwagens, etc)
      */
-    int[][] layout = new Layout().Getlayout();
+	Layout layoutObj = new Layout();
+    int[][] layout = layoutObj.Getlayout();
 	
     private List<Object3D> worldObjects;
     private List<Dock> docks;
@@ -61,11 +62,9 @@ public class World implements Model, PropertyChangeListener {
         
         this.worldObjects = new ArrayList<>();
 
-        for (int i = 0; i < layout[0].length; i++) { 
-            for (int j = 0; j < layout[1].length; j++) {
-            	if (layout[i][j] == 0) {
-            		this.robotpaths.add(new RobotPath(i,j,2.1));
-            	}
+        for (int i = 0; i < layoutObj.getRows(); i++) { 
+            for (int j = 0; j < layoutObj.getCol(); j++) {
+            	
             	
             	if (layout[i][j] == 1) {
             		this.robotpaths.add(new RobotPath(i,j,2.1));
@@ -331,10 +330,10 @@ public class World implements Model, PropertyChangeListener {
             if(!i.IsEmpty()){
             Box box  = i.GetBox();
                 if (box.getStateBox() == StateBox.OLD){
-                    
+                    box.launch();
                     this.boxes.remove(box);
                     i.EmptyPlace();
-                    this.worldObjects.remove(box);
+                    //this.worldObjects.remove(box);
                 }
             }
         }

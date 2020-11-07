@@ -39,6 +39,10 @@ class Box implements Object3D, Updatable {
     	return taken;
     }
     
+    public void launch() {
+    	this.y = 1000;
+    }
+    
     public void setTaken(boolean taken) {
     	this.taken = taken;
     }
