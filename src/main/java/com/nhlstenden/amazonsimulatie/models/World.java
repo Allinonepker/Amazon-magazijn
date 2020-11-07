@@ -132,11 +132,13 @@ public class World implements Model, PropertyChangeListener {
         if (evt.getPropertyName() == "Truck"){
             int i = (int) evt.getNewValue();
             if(i == 3){
-                EmptyDock();
                 SpawnBoxesonDock(8);
                 BringBoxestodock(8);
                 StartRobots();
                 truck.UpdateState(0);
+            }
+            if(i == 4){
+                EmptyDock();
             }
         }
          
