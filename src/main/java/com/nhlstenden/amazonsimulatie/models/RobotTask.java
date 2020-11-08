@@ -1,5 +1,6 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+// Dit is de klasse voor een taak van een robot, deze klasse wordt gebruikt om taak op te slaan en aan een robot te geven zo weten de robots wat ze moeten doen. 
 public class RobotTask {
     
     private Box box;

@@ -2,6 +2,7 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
 
+//Dit is de klasse voor het pad van de robot.
 public class RobotPath implements Object3D {
 	
     private UUID uuid;

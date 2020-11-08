@@ -20,7 +20,7 @@ class Shortestpath {
 		// vaker doorlopen wordt worden ze verplaatst naar de visited lijst.
 		List<Node> unvisited = getnodes(layout);
 		List<Node> visited = new ArrayList<>();
-		// Hier komt de uiteindelijke lijst in te staan met het korste pad. 
+		// Hier komt de uiteindelijke lijst in te staan met het korste pad.
 		List<int[]> shortestpath = new ArrayList<>();
 
 		// De begin nodes en eind nodes worden ook toegevoegd dit zijn de punten waar
@@ -38,13 +38,14 @@ class Shortestpath {
 			unvisited.add(endnode);
 		}
 
-		// Van de startnode wordt bepaald dat de afstand 0 is omdat je daar al bent. 
+		// Van de startnode wordt bepaald dat de afstand 0 is omdat je daar al bent.
 		currentnode.Setshortestdistance(0);
 
-		// Zolang alle punten nog niet bekeken zijn worden er steeds punten onderzocht. 
+		// Zolang alle punten nog niet bekeken zijn worden er steeds punten onderzocht.
 		while (!unvisited.isEmpty()) {
 
-			// Hier wordt het punt gezocht waarvan de kortste afstand het kleinst is en het punt nog niet is onderzocht.
+			// Hier wordt het punt gezocht waarvan de kortste afstand het kleinst is en het
+			// punt nog niet is onderzocht.
 			currentnode = unvisited.get(0);
 			for (Node i : unvisited) {
 				if (i.getshortestdistance() < currentnode.getshortestdistance()) {
@@ -52,22 +53,30 @@ class Shortestpath {
 				}
 			}
 
-			// Hier wordt een nieuwe lijst aangemaakt waarin alle buren van een punt staan die nog niet onderzocht zijn, deze worden opgezocht met de functie getNeigbours. 
+			// Hier wordt een nieuwe lijst aangemaakt waarin alle buren van een punt staan
+			// die nog niet onderzocht zijn, deze worden opgezocht met de functie
+			// getNeigbours.
 			List<Node> neighbours = getNeighbours(currentnode, unvisited);
 
 			int currentX = currentnode.getX();
 			int currentZ = currentnode.getZ();
 
-			// Hier wordt de afstand van de buren bepaald die nog niet onderzocht zijn deze is zijn eigen waarde + 1.
+			// Hier wordt de afstand van de buren bepaald die nog niet onderzocht zijn deze
+			// is zijn eigen waarde + 1.
 			for (Node node : neighbours) {
 				node.Setpreviousnode(currentX, currentZ);
 				node.Setshortestdistance(currentnode.getshortestdistance() + 1);
 			}
 
+			// Hier wordt de onderzochte node verplaatst naar de lijst visited
 			visited.add(currentnode);
 			unvisited.remove(currentnode);
 		}
 
+		// In dit stukje code wordt het pad bepaald, hij begint eerst bij de eind node
+		// en kijkt in eindnode welke daarvoor werd gedoorlopen, dit herhaalt zich
+		// totdat hij bij de begin node is. Ondertussen slaat hij al deze punten op in
+		// een lijst, zo krijg je de kortste route
 		Node prevnode = endnode;
 		Node startnode = getNode(startX, startZ, visited);
 
@@ -82,9 +91,11 @@ class Shortestpath {
 				}
 			}
 		}
+		// Hier wordt het korste pad terug gegeven
 		return shortestpath;
 	}
 
+	// Dit is de functie om een node op te zoeken in een lijst met nodes.
 	private Node getNode(int X, int Z, List<Node> nodelist) {
 		for (int i = 0; i < nodelist.size(); i++) {
 			Node node = nodelist.get(i);
@@ -94,12 +105,16 @@ class Shortestpath {
 		return null;
 	}
 
+	// Dit is de functie om de buren van een punt op te zoeken
 	private List<Node> getNeighbours(Node point, List<Node> nodelist) {
 
 		int X = point.getX();
 		int Z = point.getZ();
 		List<Node> Neighbours = new ArrayList<Node>();
 
+		// loopt door alle punten in de nodelist en kijkt of hij 1 plaats van de node af
+		// ligt, dit betekent dus dat hij een buurman is en dan wordt hij toegevoegd aan
+		// de burenlijst
 		for (Node i : nodelist) {
 
 			int Xinspecting = i.getX();
@@ -113,12 +128,16 @@ class Shortestpath {
 		return Neighbours;
 	}
 
+	// Deze functie haalt alle beloopbare paden uit een layout en voegt ze toe aan
+	// een lijst.
 	private List<Node> getnodes(int[][] layout) {
 
 		List<Node> nodes = new ArrayList<Node>();
 
 		for (int i = 0; i < layout[0].length; i++) {
 			for (int j = 0; j < layout.length; j++) {
+				// Als een punt een robotpad, een robotpad met robot is of een ontzichtbaar
+				// robot pad is wordt hij toegevoegd.
 				if (layout[i][j] == 1 || layout[i][j] == 2 || layout[i][j] == 6) {
 					Node newnode = new Node((i), j);
 					nodes.add(newnode);
@@ -129,6 +148,10 @@ class Shortestpath {
 
 	}
 
+	// Dit is de klasse die gebruikt wordt in shortestpath om punten op te slaan in
+	// zogenaamde nodes, deze hebben een waarde shortestdistance die bepaald hoever
+	// het is van deze node tot de beginnode. Ook wordt aangegeven welke node de
+	// vorige node is om door te lopen om bij de begin node te komen
 	private class Node {
 
 		private int X;

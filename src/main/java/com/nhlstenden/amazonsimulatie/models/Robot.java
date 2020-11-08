@@ -34,7 +34,7 @@ class Robot implements Object3D, Updatable {
     // 3 is oppakken doos, naar dock lopen 
     // 4 is doos neerzetten
     // 5 is kijken naar nieuwe taak
-    private int state = 5;
+    private int state = 4;
     private RobotTask task;
 
     private SleepPlace sleepplace;

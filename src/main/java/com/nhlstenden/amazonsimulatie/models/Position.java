@@ -1,5 +1,6 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+// Dit is de positie klasse, deze wordt gebruikt voor het opslaan van de animaties maar ook om posities van de objecten in door te geven
 public class Position {
 
     private double x;

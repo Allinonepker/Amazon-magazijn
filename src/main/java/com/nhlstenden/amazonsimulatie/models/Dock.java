@@ -2,7 +2,7 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
 
-// Dit is de klasse voor 
+// Dit is de klasse voor een plaats in de truck, deze wordt gebruikt om aan tegeven of er een doos op staat en welke doos er op staat. 
 public class Dock implements Object3D , Boxplace{
 	
     private UUID uuid;
