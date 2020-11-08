@@ -3,13 +3,9 @@ package com.nhlstenden.amazonsimulatie.models;
 import java.util.UUID;
 
 // Dit is de klasse voor een plaats in de truck, deze wordt gebruikt om aan tegeven of er een doos op staat en welke doos er op staat. 
-public class Dock implements Object3D , Boxplace{
+public class Dock extends Object implements Object3D , Boxplace{
 	
-    private UUID uuid;
-    
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
+
 
     private double rotationX = 0;
     private double rotationY = 0;
@@ -47,32 +43,12 @@ public class Dock implements Object3D , Boxplace{
         return box;
     }
 
-
-    @Override
-    public String getUUID() {
-        return this.uuid.toString();
-    }
-
     @Override
     public String getType() {
 
         return Dock.class.getSimpleName().toLowerCase();
     }
-    
-    @Override
-    public double getX() {
-        return this.x;
-    }
-
-    @Override
-    public double getY() {
-        return this.y;
-    }
-
-    @Override
-    public double getZ() {
-        return this.z;
-    }
+   
 
     @Override
     public double getRotationX() {

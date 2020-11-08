@@ -12,16 +12,12 @@ import java.util.UUID;
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
  * een robot geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
  */
-class Robot implements Object3D, Updatable {
-    private UUID uuid;
+class Robot extends Object implements Object3D, Updatable, IRobot {
+
 
     private List<Position> actionlist = new ArrayList<Position>();
 
     private PropertyChangeSupport support;
-
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
 
     private double rotationX = 0;
     private double rotationY = 0;
@@ -136,14 +132,6 @@ class Robot implements Object3D, Updatable {
         this.actionlist.add(i);
     }
 
-
-
-
-    @Override
-    public String getUUID() {
-        return this.uuid.toString();
-    }
-
     @Override
     public String getType() {
         /*
@@ -154,21 +142,7 @@ class Robot implements Object3D, Updatable {
          */
         return Robot.class.getSimpleName().toLowerCase();
     }
-    
-    @Override
-    public double getX() {
-        return this.x;
-    }
 
-    @Override
-    public double getY() {
-        return this.y;
-    }
-
-    @Override
-    public double getZ() {
-        return this.z;
-    }
 
     @Override
     public double getRotationX() {

@@ -3,13 +3,7 @@ package com.nhlstenden.amazonsimulatie.models;
 import java.util.UUID;
 
 //Dit is de klasse voor het pad van de robot.
-public class RobotPath implements Object3D {
-	
-    private UUID uuid;
-    
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
+public class RobotPath extends Object implements Object3D {
 
     private double rotationX = 0;
     private double rotationY = 0;
@@ -21,12 +15,7 @@ public class RobotPath implements Object3D {
         this.z = z;
         this.y = y;
     }
-    
 
-    @Override
-    public String getUUID() {
-        return this.uuid.toString();
-    }
 
     @Override
     public String getType() {
@@ -34,20 +23,6 @@ public class RobotPath implements Object3D {
         return RobotPath.class.getSimpleName().toLowerCase();
     }
     
-    @Override
-    public double getX() {
-        return this.x;
-    }
-
-    @Override
-    public double getY() {
-        return this.y;
-    }
-
-    @Override
-    public double getZ() {
-        return this.z;
-    }
 
     @Override
     public double getRotationX() {

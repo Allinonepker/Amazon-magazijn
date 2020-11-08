@@ -20,5 +20,4 @@ public class RobotTask {
     public Box Getbox (){
         return this.box;
     }
-
 }

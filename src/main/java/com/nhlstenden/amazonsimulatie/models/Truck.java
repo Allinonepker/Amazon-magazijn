@@ -11,17 +11,12 @@ import java.util.UUID;
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
  * een robot geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
  */
-class Truck implements Object3D, Updatable {
-    private UUID uuid;
+class Truck extends Object implements Object3D, Updatable, ITruck {
 
     private List<Position> actionlist = new ArrayList<Position>();
 
     private PropertyChangeSupport support;
     
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
-
     private double rotationX = 0;
     private double rotationY = Math.PI / 2;
     private double rotationZ = 0;
@@ -123,11 +118,7 @@ class Truck implements Object3D, Updatable {
         }
         FeedPositions(positions);	
     }
-    
-    @Override
-    public String getUUID() {
-        return this.uuid.toString();
-    }
+
 
     public void FeedPositions(List<Position> newactions){
         for(Position i : newactions)
@@ -145,21 +136,7 @@ class Truck implements Object3D, Updatable {
          */
         return Truck.class.getSimpleName().toLowerCase();
     }
-    
-    @Override
-    public double getX() {
-        return this.x;
-    }
 
-    @Override
-    public double getY() {
-        return this.y;
-    }
-
-    @Override
-    public double getZ() {
-        return this.z;
-    }
 
     @Override
     public double getRotationX() {

@@ -3,13 +3,7 @@ package com.nhlstenden.amazonsimulatie.models;
 import java.util.UUID;
 
 // Dit is de klasse die wordt gebruikt om de plaatsen aan te geven waar de dozen kunnen worden opgeslagen 
-public class Storageplace implements Object3D, Boxplace {
-	
-    private UUID uuid;
-    
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
+public class Storageplace extends Object implements Object3D, Boxplace {
 
     private double rotationX = 0;
     private double rotationY = 0;
@@ -47,33 +41,13 @@ public class Storageplace implements Object3D, Boxplace {
         return box;
     }
 
-    
-
-    @Override
-    public String getUUID() {
-        return this.uuid.toString();
-    }
 
     @Override
     public String getType() {
 
         return Storageplace.class.getSimpleName().toLowerCase();
     }
-    
-    @Override
-    public double getX() {
-        return this.x;
-    }
 
-    @Override
-    public double getY() {
-        return this.y;
-    }
-
-    @Override
-    public double getZ() {
-        return this.z;
-    }
 
     @Override
     public double getRotationX() {

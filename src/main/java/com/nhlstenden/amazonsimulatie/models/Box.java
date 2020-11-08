@@ -5,18 +5,13 @@ import java.util.List;
 import java.util.UUID;
 
 // Dit is de klasse voor de doos, dit zijn beweegbare objecten die robots moeten verplaatsen door het magazijn. 
-class Box implements Object3D, Updatable {
-    private UUID uuid;
+class Box extends Object implements Object3D, Updatable {
 
     StateBox stateBox;
 
     enum StateBox {
         NEW, OLD
     }
-
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
 
     private double rotationX = 0;
     private double rotationY = 0;
@@ -86,11 +81,6 @@ class Box implements Object3D, Updatable {
     }
 
     @Override
-    public String getUUID() {
-        return this.uuid.toString();
-    }
-
-    @Override
     public String getType() {
         /*
          * Dit onderdeel wordt gebruikt om het type van dit object als stringwaarde
@@ -99,21 +89,6 @@ class Box implements Object3D, Updatable {
          * In de javascript code wordt dit dan weer verder afgehandeld.
          */
         return Box.class.getSimpleName().toLowerCase();
-    }
-
-    @Override
-    public double getX() {
-        return this.x;
-    }
-
-    @Override
-    public double getY() {
-        return this.y;
-    }
-
-    @Override
-    public double getZ() {
-        return this.z;
     }
 
     @Override
