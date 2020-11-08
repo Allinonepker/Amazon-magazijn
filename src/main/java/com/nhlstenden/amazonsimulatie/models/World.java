@@ -17,7 +17,6 @@ import com.nhlstenden.amazonsimulatie.models.Box.StateBox;
  */
 public class World implements Model, PropertyChangeListener {
     /*
-     * De wereld bestaat uit objecten, vandaar de naam worldObjects. Dit is een
      * lijst van alle objecten in de 3D wereld. Deze objecten zijn in deze
      * voorbeeldcode alleen nog robots. Er zijn ook nog meer andere objecten die ook
      * in de wereld voor kunnen komen. Deze objecten moeten uiteindelijk ook in de
@@ -35,7 +34,7 @@ public class World implements Model, PropertyChangeListener {
     private Truck truck;
     private List<RobotTask> robottasks;
     private List<Storageplace> storageplaces;
-    private List<Sleepplace> sleepplaces;
+    private List<SleepPlace> sleepplaces;
 
     private Shortestpath shortestpath = new Shortestpath();
     private Animator animator = new Animator(5);
@@ -100,7 +99,7 @@ public class World implements Model, PropertyChangeListener {
                 }
 
                 if (layout[i][j] == 7) {
-                    Sleepplace sleepplace = new Sleepplace(i, j, 1.87);
+                    SleepPlace sleepplace = new SleepPlace(i, j, 1.87);
                     sleepplaces.add(sleepplace);
                 }
             }
@@ -274,10 +273,10 @@ public class World implements Model, PropertyChangeListener {
 
     public void Gotosleepplace(Robot robot) {
         Position robotpos = robot.getPosition();
-        Sleepplace sleepplace;
+        SleepPlace sleepplace;
 
-        List<Sleepplace> emptySleepplace = new ArrayList<>();
-        for (Sleepplace i : sleepplaces) {
+        List<SleepPlace> emptySleepplace = new ArrayList<>();
+        for (SleepPlace i : sleepplaces) {
             if (i.getTaken() == false)
                 emptySleepplace.add(i);
         }
@@ -319,7 +318,7 @@ public class World implements Model, PropertyChangeListener {
                 }
             }
         } catch (Exception e) {
-            System.out.println("SAME FUCKING ERROR");
+            
         }
 
         int robotsintruck = 0;

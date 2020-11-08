@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.swing.plaf.basic.BasicSliderUI.ActionScroller;
 
 /*
  * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
@@ -31,7 +30,7 @@ class Robot implements Object3D, Updatable {
     private int state = 1;
     private RobotTask task;
 
-    private Sleepplace sleepplace;
+    private SleepPlace sleepplace;
 
     public Robot(double x, double z, double y) {
         this.uuid = UUID.randomUUID();
@@ -82,11 +81,11 @@ class Robot implements Object3D, Updatable {
     }
 
 
-    public void setSleepplace(Sleepplace sleepplace) {
+    public void setSleepplace(SleepPlace sleepplace) {
         this.sleepplace = sleepplace;
     }
     
-    public Sleepplace getSleepplace() {
+    public SleepPlace getSleepplace() {
         return sleepplace;
     }
 

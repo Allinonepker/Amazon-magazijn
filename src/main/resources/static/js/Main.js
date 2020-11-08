@@ -3,10 +3,14 @@ function parseCommand(input = "") {
 }
 var socket;
 window.onload = function() {
+
+  //declareren van de variabelen
   var camera, scene, renderer;
   var cameraControls;
   var worldObjects = {};
   var mtlLoader = new THREE.MTLLoader();
+  //variabel voor auto die op de achtergrond te zien is
+  var truckObjectProp;
   function socket() {
     /*
      * Hier wordt de socketcommunicatie geregeld. Er wordt een nieuwe websocket aangemaakt voor het webadres dat we in
@@ -29,8 +33,8 @@ window.onload = function() {
         //Wanneer het object dat moet worden geupdate nog niet bestaat (komt niet voor in de lijst met worldObjects op de client),
         //dan wordt het 3D model eerst aangemaakt in de 3D wereld.
         if (Object.keys(worldObjects).indexOf(command.parameters.uuid) < 0) {
-        
-          //Robot
+         
+          //Als "robot" als type wordt verstuurd naar de browser wordt er een robot gemaakt
           if (command.parameters.type == "robot") {
             var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
             var cubeMaterials = [
@@ -74,6 +78,7 @@ window.onload = function() {
 
             var material = new THREE.MeshFaceMaterial(cubeMaterials);
             var robot = new THREE.Mesh(geometry, material);
+            
             robot.position.y = 0.15;
             robot.receiveShadow = true;
             robot.castShadow = true;
@@ -82,7 +87,7 @@ window.onload = function() {
             scene.add(group);
             worldObjects[command.parameters.uuid] = group;
           }
-          //Crate
+          //Als "crate" als type wordt verstuurd naar de browser wordt er een crate gemaakt
           if (command.parameters.type == "box") {
             var BoxGeometry = new THREE.BoxGeometry(0.9, 0.9, 0.9);
             var BoxMaterials = new THREE.MeshPhongMaterial({
@@ -100,7 +105,8 @@ window.onload = function() {
             scene.add(crate);
             worldObjects[command.parameters.uuid] = crate;
           }
-          //Warehouse path
+          
+          //Als "robotpath" als type wordt verstuurd naar de browser wordt er een robotpath gemaakt
           if (command.parameters.type == "robotpath") {
             var geometry = new THREE.PlaneGeometry(1, 1);
             var material = new THREE.MeshPhongMaterial({
@@ -116,7 +122,8 @@ window.onload = function() {
             scene.add(group);
             worldObjects[command.parameters.uuid] = group;
           }
-          //Truck
+          
+          //Als "truck" als type wordt verstuurd naar de browser wordt er een vrachtwagen gemaakt
           if (command.parameters.type == "truck") {
             var truckObject = new THREE.Object3D();
             scene.add(truckObject);
@@ -152,7 +159,9 @@ window.onload = function() {
       }
     };
   }
+  
   function init() {
+  	//funties om de wereld op te bouwen
     setRenderer();
     createScene();
     addCamera();
@@ -162,16 +171,26 @@ window.onload = function() {
     addWarehouse();
     window.addEventListener("resize", onWindowResize, false);
   }
+  
+  //Als de browser van formaat verandert doet de wereld dat ook
   function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
   }
+  
+  //elke frame wordt deze functie uitgevoerd om de wereld te updaten
   function animate() {
+  	//Loop voor de vrachwagen
+  	if (truckObjectProp.position.z > 500) 
+  		truckObjectProp.position.z = -480;
+    truckObjectProp.position.z += 1.5;
     requestAnimationFrame(animate);
     cameraControls.update();
     renderer.render(scene, camera);
   }
+  
+  //WebGLRenderer
   function setRenderer() {
     //Renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -179,10 +198,14 @@ window.onload = function() {
     renderer.setSize(window.innerWidth, window.innerHeight + 5);
     document.body.appendChild(renderer.domElement);
   }
+  
+  //Nieuwe scene
   function createScene() {
     //Scene
     scene = new THREE.Scene();
   }
+  
+  //Camera toevoegen
   function addCamera() {
     //Camera
     camera = new THREE.PerspectiveCamera(
@@ -196,27 +219,38 @@ window.onload = function() {
     cameraControls.dampingFactor = 0.05;
     cameraControls.screenSpacePanning = false;
     cameraControls.minDistance = 0;
-    cameraControls.maxDistance = 100;
+    cameraControls.maxDistance = 300;
     cameraControls.maxPolarAngle = Math.PI / 2.1;
     cameraControls.rotateSpeed = 0.04;
-    cameraControls.panSpeed = 0.04;
+    cameraControls.panSpeed = 0.1;
     camera.position.z = 50;
     camera.position.y = 50;
     camera.position.x = 100;
     cameraControls.update();
   }
+  
+  //HemisphereLight, AmbientLight en Pointlight
   function addlighting() {
-    //Shadow/Light
-    var ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    //AmbientLight
+    var ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
     scene.add(ambientLight);
-    light = new THREE.PointLight(0xffffff, 1, 180);
-    light.position.set(20, 15, 15);
+    
+    //PointLight
+    light = new THREE.PointLight(0xffffff, 0.5, 180);
+    light.position.set(50, 40, 40);
     light.castShadow = true;
     // Will not light anything closer than 0.1 units or further than 25 units
-    light.shadow.camera.near = -1;
-    light.shadow.camera.far = 100;
+    //light.shadow.camera.near = -1;
+    //light.shadow.camera.far = 100;
     scene.add(light);
+    
+    //HemisphereLight
+    hemiLight = new THREE.HemisphereLight( 0xffffbb, 0x080820, 0.6 ); 
+    scene.add(hemiLight);
+
   }
+  
+  //SkyBox toevoegen als achtergrond
   function addSkybox() {
     //Skybox
     const loader = new THREE.CubeTextureLoader();
@@ -232,9 +266,45 @@ window.onload = function() {
     ]);
     scene.background = texture;
   }
+  
+  //Wereld platform aanmaken met bomen op willekeurige plekken behalve in magazijn of op de weg
   function addWorldPlane() {
     //Worldplane
+    var randomnumberx = 0;
+    var randomnumberz = 0;
+    
     var tiles = ["tile_tree", "tile_treeDouble", "tile_treeQuad"];
+    for (var i = 0; i < 75; i++) {
+    mtlLoader.load("textures/tiles/" + tiles[Math.floor(Math.random() * tiles.length)] + ".mtl", function(materials) {
+      materials.preload();
+      const objLoader = new THREE.OBJLoader();
+      objLoader.setMaterials(materials);
+      objLoader.load("textures/tiles/" + tiles[Math.floor(Math.random() * tiles.length)] + ".obj", function(mesh) {
+        mesh.traverse(function(node) {
+          if (node instanceof THREE.Mesh) {
+            node.castShadow = true;
+            node.receiveShadow = true;
+          }
+        });
+        while ((randomnumberx < 20 && randomnumberx > -20) || (randomnumberx > -230 && randomnumberx < -180)) {
+        	randomnumberx = Math.random() * 480;
+        	if (Math.random() > 0.5)
+        		randomnumberx *= -1;
+	        }
+        while (randomnumberz < 20 && randomnumberz > -20) {
+        	randomnumberz = Math.random() * 480;
+        	if (Math.random() > 0.5)
+        		randomnumberz *= -1;
+	        }
+        scene.add(mesh);
+        mesh.position.set(randomnumberx, -4 ,randomnumberz);
+    	randomnumberx = 0;
+    	randomnumberz = 0;
+        mesh.scale.set(20, 20, 20);
+	      });
+	    });
+	  }
+  	//Groene platform
     var tile = "tile";
     mtlLoader.load("textures/tiles/" + tile + ".mtl", function(materials) {
       materials.preload();
@@ -256,12 +326,30 @@ window.onload = function() {
     });
   }
   function addWarehouse() {
-      //floor
-      mtlLoader.load("textures/warehousetest/roadTile_001.mtl", function(materials) {
+  	    //Logo m.b.v. GLTFLoader
+		var loader = new THREE.GLTFLoader();
+		loader.load('textures/logo/Capture.gltf', handle_load);
+	  
+	    function handle_load(gltf) {
+
+        console.log(gltf);
+        mesh = gltf.scene;
+        console.log(mesh.children[0]);
+        mesh.children[0].material = new THREE.MeshLambertMaterial();
+		scene.add( mesh );
+		mesh.scale.set(100,10,100);
+		mesh.position.set(21.2,14,21.5);
+        mesh.rotation.x = -Math.PI / 2;
+        mesh.rotation.y = Math.PI;
+        mesh.rotation.z = Math.PI /2;
+    }
+  	  
+      //vloer van het magazijn
+      mtlLoader.load("textures/warehouse/roadTile_001.mtl", function(materials) {
         materials.preload();
         const objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
-        objLoader.load("textures/warehousetest/roadTile_001.obj", function(mesh) {
+        objLoader.load("textures/warehouse/roadTile_001.obj", function(mesh) {
           mesh.traverse(function(node) {
             if (node instanceof THREE.Mesh) {
               node.castShadow = true;
@@ -276,12 +364,13 @@ window.onload = function() {
           mesh.scale.set(10.5, 3, 6.8);
         });
       });
-
-      mtlLoader.load("textures/warehousetest/roadTile_001.mtl", function(materials) {
+      
+	  //Rustplek robots
+      mtlLoader.load("textures/warehouse/roadTile_001.mtl", function(materials) {
         materials.preload();
         const objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
-        objLoader.load("textures/warehousetest/roadTile_001.obj", function(mesh) {
+        objLoader.load("textures/warehouse/roadTile_001.obj", function(mesh) {
           mesh.traverse(function(node) {
             if (node instanceof THREE.Mesh) {
               node.castShadow = true;
@@ -297,11 +386,13 @@ window.onload = function() {
         });
       });
       
-      mtlLoader.load("textures/warehousetest/old_warehouse01_upgrade.mtl", function(materials) {
+      //Magazijn
+      mtlLoader.setMaterialOptions( { side: THREE.DoubleSide } );
+      mtlLoader.load("textures/warehouse/old_warehouse01_upgrade.mtl", function(materials) {
         materials.preload();
         const objLoader = new THREE.OBJLoader();
         objLoader.setMaterials(materials);
-        objLoader.load("textures/warehousetest/old_warehouse01_upgrade.obj", function(mesh) {
+        objLoader.load("textures/warehouse/old_warehouse01_upgrade.obj", function(mesh) {
           mesh.traverse(function(node) {
             if (node instanceof THREE.Mesh) {
               node.castShadow = true;
@@ -317,9 +408,30 @@ window.onload = function() {
           mesh.scale.set(0.05, 0.05, 0.026);
         });
       });
-      
+      //Vrachtwagen prop die achter het magazijn rijdt
+      truckObjectProp = new THREE.Object3D();
+          scene.add(truckObjectProp);
+          mtlLoader.load("textures/truck/delivery.mtl", function(materials) {
+            materials.preload();
+            const objLoader = new THREE.OBJLoader();
+            objLoader.setMaterials(materials);
+            objLoader.load("textures/truck/delivery.obj", function(truck) {
+              truck.traverse(function(node) {
+                if (node instanceof THREE.Mesh) {
+                  node.castShadow = true;
+                  node.receiveShadow = true;
+                }
+              });
+              
+              truckObjectProp.scale.set(5, 5, 5);
+              truckObjectProp.model = truck;
+              truckObjectProp.position.set(-200, 0, -480); 
+              truckObjectProp.add(truckObjectProp.model);
+            });
+          });
     
-      //Road
+
+      //Weg voor de vrachtwagen van het magazijn
       mtlLoader.load("textures/road/tile_wideStraight.mtl", function(materials) {
         materials.preload();
         const objLoader = new THREE.OBJLoader();
@@ -332,12 +444,31 @@ window.onload = function() {
             }
           });
           scene.add(mesh);
-          mesh.position.set(70, 0.2, 15);
+          mesh.position.set(260, 0.2, 15);
           mesh.rotation.y = Math.PI / 2;
-          mesh.scale.set(5, 1, 100);
+          mesh.scale.set(5, 1, 480);
+        });
+      });
+      
+      //Weg voor de vrachtwagen prop
+      mtlLoader.load("textures/road/tile_wideStraight.mtl", function(materials) {
+        materials.preload();
+        const objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(materials);
+        objLoader.load("textures/road/tile_wideStraight.obj", function(mesh) {
+          mesh.traverse(function(node) {
+            if (node instanceof THREE.Mesh) {
+              node.castShadow = true;
+              node.receiveShadow = true;
+            }
+          });
+          scene.add(mesh);
+          mesh.position.set(-200, 0.2, 0);
+          mesh.scale.set(5, 1, 1000);
         });
       });
   }
+  //Socket, wereld aanmaken en animate loop
   socket();
   init();
   animate();
