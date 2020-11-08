@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
+// Dit is de klasse voor de doos, dit zijn beweegbare objecten die robots moeten verplaatsen door het magazijn. 
 class Box implements Object3D, Updatable {
 	private UUID uuid;	
 	
@@ -39,6 +41,7 @@ class Box implements Object3D, Updatable {
     	return taken;
     }
     
+    // Stuurt de doos in de lucht, dit zodat het lijkt dat de doos niet meer bestaat. Dit wordt gebruikt om de doos te verwijderen
     public void launch() {
     	this.y = 1000;
     }
@@ -55,6 +58,7 @@ class Box implements Object3D, Updatable {
     	return this.stateBox;
     }
 
+    // Zorgt ervoor zodat een animatie kan worden verstuurd naar de actielijst van de doos, zodat de doos een animatie kan uitvoeren. 
     public void FeedPositions(List<Position> newpositions){
         for(Position i : newpositions)
         this.actionlist.add(i);
@@ -62,6 +66,7 @@ class Box implements Object3D, Updatable {
     
     @Override
     public boolean update() {
+        //Loopt de actielijst af zodat een voor een de posities worden aangenomen zodat het lijkt alsof de doos beweegt. 
         if (!actionlist.isEmpty()) {
             Position action = actionlist.remove(0);
 

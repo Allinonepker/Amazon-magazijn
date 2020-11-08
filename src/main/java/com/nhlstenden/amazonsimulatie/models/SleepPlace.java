@@ -1,8 +1,7 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+// Dit is de klasse die wordt gebruikt om de plekken op te slaan waar robots op kunnen rusten 
 public class SleepPlace {
-
-
 
     private double x;
     private double z;
@@ -24,13 +23,9 @@ public class SleepPlace {
         taken = false;
     }
 
-
-
-
     public boolean getTaken() {
         return taken;
     }
-
 
     public double getX() {
         return x;
