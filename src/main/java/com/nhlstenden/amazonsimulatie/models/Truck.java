@@ -18,7 +18,7 @@ class Truck implements Object3D, Updatable {
 
     private PropertyChangeSupport support;
     
-    private double x = 110;
+    private double x = 0;
     private double y = 0;
     private double z = 0;
 
@@ -69,6 +69,13 @@ class Truck implements Object3D, Updatable {
             if(state == 0)
             return false;
 
+            // hier wordt als de truck een staat hoger gaat aangegeven wat de truck moet doen
+            // staat 1 is idle 
+            // staat 2 is naar het dock rijden.
+            // staat 3 is dozen in spawnen en taken voor de robots generen en activeren.
+            // staat 4 is om de robot weer te activeren om weg te rijden.
+            // staat 5 is van het dock weg rijden.
+            // staat 6 is om de truck weer naar de beginstaat te brengen. 
             UpdateState(state + 1);
             if(state == 2){
                 goingToDock();
@@ -88,6 +95,7 @@ class Truck implements Object3D, Updatable {
         support.addPropertyChangeListener(pcl);
     }
 
+    // Dit is de functie die de staat van de truck update deze voert ook gelijk een propertychange naar de world zodat die ook de juiste acties uit voert. 
     public void UpdateState(int newstate){
         int oldstate = state;
         state = newstate;
@@ -98,6 +106,7 @@ class Truck implements Object3D, Updatable {
         return this.state;
     }
     
+    // Functie om de truck weg van het dock te laten rijden. 
     public void goingBack() {
         List<Position> positions = new ArrayList<>();
         for(double i = 0; i < 74; i++){
@@ -105,7 +114,8 @@ class Truck implements Object3D, Updatable {
         }
         FeedPositions(positions);	
     }
-    
+        
+    // Functie om de truck naar het dock toe te laten rijden
     public void goingToDock() {
         List<Position> positions = new ArrayList<>();
         for(double i = 0; i < 74; i++){
@@ -123,16 +133,6 @@ class Truck implements Object3D, Updatable {
         for(Position i : newactions)
         this.actionlist.add(i);
     }
-
-    public void TurnTruck() {
-        List<Position> positionlist = new ArrayList<>();
-
-        for (double i = 0; i <= 1; i =+ 0.1){
-            positionlist.add(new Position(this.x -(1 - i*i), this.z + i * i, this.y, this.rotationX, this.rotationZ, this.rotationY - (i * Math.PI/2)/10));
-        }
-    }
-
-
 
     
     @Override

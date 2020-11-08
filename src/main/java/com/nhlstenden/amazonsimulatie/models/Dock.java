@@ -2,6 +2,7 @@ package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
 
+// Dit is de klasse voor 
 public class Dock implements Object3D , Boxplace{
 	
     private UUID uuid;
@@ -46,8 +47,6 @@ public class Dock implements Object3D , Boxplace{
         return box;
     }
 
-
-    
 
     @Override
     public String getUUID() {

@@ -27,7 +27,14 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    private int state = 1;
+    // Staat van de robot
+    // 0 is slapen 
+    // 1 is idle
+    // 2 is starten nieuwe taak, naar doos lopen
+    // 3 is oppakken doos, naar dock lopen 
+    // 4 is doos neerzetten
+    // 5 is kijken naar nieuwe taak
+    private int state = 5;
     private RobotTask task;
 
     private SleepPlace sleepplace;
@@ -37,6 +44,7 @@ class Robot implements Object3D, Updatable {
         this.x = x;
         this.z = z;
         this.y = y;
+        // hier wordt een propertychangesupport aangemaakt zodat de robot kan communiceren met de wereld 
         support = new PropertyChangeSupport(this);
     }
 
@@ -58,6 +66,7 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
+         // Loopt de actielijst af zodat een voor een de posities worden aangenomen zodat het lijkt alsof de robot beweegt. 
         if (!actionlist.isEmpty()) {
             Position action = actionlist.remove(0);
 
@@ -71,7 +80,10 @@ class Robot implements Object3D, Updatable {
 
             return true;
 
-        } else {
+        } 
+        // Als de actielijst leeg is is de robot klaar met zijn animatie de robot wordt dan in de volgende staat gebracht 
+        else {
+            // Als hij in rust stand staat wordt er niks gedaan. 
             if(state == 0)
             return true;
 
@@ -89,10 +101,12 @@ class Robot implements Object3D, Updatable {
         return sleepplace;
     }
 
+    
     public void StopActions(){
         actionlist.clear();
     }
 
+    // Zorgt er voor dat de robot in de volgende staat wordt gebracht deze verandering wordt ook naar de wereld verstuurt zodat de volgde acties worden uitgevoerd
     public void UpdateState(int newstate){
         int oldstate = state;
         state = newstate;
@@ -116,6 +130,7 @@ class Robot implements Object3D, Updatable {
         return this.task;
     }
 
+    // Zorgt ervoor zodat een animatie kan worden verstuurd naar de actielijst van de robot, zodat de robot een animatie kan uitvoeren.
     public void FeedPositions(List<Position> newactions){
         for(Position i : newactions)
         this.actionlist.add(i);

@@ -1,10 +1,5 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.security.interfaces.RSAMultiPrimePrivateCrtKey;
-import java.util.Random;
-
-import javax.naming.ldap.Rdn;
-
 class Layout {
 	private int[][] layout;
 	private int layoutRows;
@@ -12,7 +7,15 @@ class Layout {
 	
 			
 
-	
+	// Dit is de layout voor onze simulatie
+	// 0 is niks
+	// 1 is een robotpad
+	// 2 is een robotpad met een robot erop
+	// 3 is een opslagplaats voor een doos, plaats in het magazijn
+	// 4 is een plaats in de truck waar dozen kunnen worden afgeleverd
+	// 5 is een opslagplaats met een doos er op
+	// 6 is een ontzichtbare robotpad
+	// 7 is een rutstplaats voor de robot
 	public Layout() {
 
 
